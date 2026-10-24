@@ -1,0 +1,14 @@
+# Hasil kompilasi LaTeX
+*.aux
+*.lof
+*.lot
+*.lol
+*.out
+*.toc
+*.log
+*.raw
+out.txt
+preview/
+
+# Log mentah; versi ringkas ada di frankenphp-evidence.txt
+frankenphp-log.txt

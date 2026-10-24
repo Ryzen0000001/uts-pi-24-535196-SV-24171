@@ -1,9 +1,17 @@
-﻿SEBELUM DOWN: jumlah catatan = 5, id baru = 8
+SEBELUM DOWN: id uji = 8, jumlah catatan = 6
 docker compose down
 docker compose up -d
+backend /up -> 200
 docker compose ps:
-NAME                IMAGE                   COMMAND                  SERVICE    CREATED          STATUS                    PORTS
-uts-pi-backend-1    uts-pi-backend:local    "entrypoint frankenpΓÇª"   backend    31 seconds ago   Up 27 seconds (healthy)   0.0.0.0:8000->8000/tcp, [::]:8000->8000/tcp
-uts-pi-db-1         mysql:8.4.13            "docker-entrypoint.sΓÇª"   db         31 seconds ago   Up 31 seconds (healthy)   3306/tcp, 33060/tcp
-uts-pi-frontend-1   uts-pi-frontend:local   "/docker-entrypoint.ΓÇª"   frontend   31 seconds ago   Up 26 seconds (healthy)   0.0.0.0:8080->80/tcp, [::]:8080->80/tcp
+NAME                IMAGE                   COMMAND                  SERVICE    CREATED         STATUS                            PORTS
+uts-pl-backend-1    uts-pl-backend:local    "entrypoint frankenp..."   backend    9 seconds ago   Up 3 seconds (health: starting)   0.0.0.0:8000->8000/tcp, [::]:8000->8000/tcp
+uts-pl-db-1         mysql:8.4.13            "docker-entrypoint.s..."   db         9 seconds ago   Up 8 seconds (healthy)            3306/tcp, 33060/tcp
+uts-pl-frontend-1   uts-pl-frontend:local   "/docker-entrypoint...."   frontend   9 seconds ago   Up 2 seconds (health: starting)   0.0.0.0:8080->80/tcp, [::]:8080->80/tcp
 SESUDAH UP: jumlah catatan = 6; data id=8 ditemukan = True; service_type = Uji persistensi volume
+Pembersihan: DELETE id=8 -> {"message":"Catatan dihapus."}
+
+STATUS AKHIR SETELAH SEHAT:
+NAME                IMAGE                   COMMAND                  SERVICE    CREATED         STATUS                        PORTS
+uts-pl-backend-1    uts-pl-backend:local    "entrypoint frankenp..."   backend    2 minutes ago   Up About a minute (healthy)   0.0.0.0:8000->8000/tcp, [::]:8000->8000/tcp
+uts-pl-db-1         mysql:8.4.13            "docker-entrypoint.s..."   db         2 minutes ago   Up 2 minutes (healthy)        3306/tcp, 33060/tcp
+uts-pl-frontend-1   uts-pl-frontend:local   "/docker-entrypoint...."   frontend   2 minutes ago   Up About a minute (healthy)   0.0.0.0:8080->80/tcp, [::]:8080->80/tcp

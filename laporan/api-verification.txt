@@ -1,0 +1,19 @@
+POST /api/login -> 200
+{"user":{"id":1,"name":"Akun Demo","email":"demo@example.com","email_verified_at":null,"created_at":"2026-10-24T13:14:17.000000Z","updated_at":"2026-10-24T13:14:17.000000Z"},"token":"<token>"}
+Token diperoleh: <token>
+POST /api/service-logs -> 201
+{"data":{"motor":"Vario 125","serviced_at":"2026-10-24","odometer_km":25000,"service_type":"Uji verifikasi laporan","cost":60000,"workshop":"AHASS Sleman","notes":"data sementara","updated_at":"2026-10-24T13:24:04.000000Z","created_at":"2026-10-24T13:24:04.000000Z","id":7}}
+GET /api/service-logs -> 200
+{"data":[{"id":7,"motor":"Vario 125","serviced_at":"2026-10-24","odometer_km":25000,"service_type":"Uji verifikasi laporan","cost":60000,"workshop":"AHASS Sleman","notes":"data sementara","created_at":"2026-10-24T13:24:04.000000Z","updated_at":"2026-10-24T13:24:04.000000Z"},{"id":5,"motor":"Vario 125","serviced_at":"2026-10-12","odometer_km":24310,"service_type":"Ganti ban belakang","cost":260000,"workshop":"Bengkel Pak Min","notes":"Ban lama retak","created_at":"2026-10-24T13:14:17.000000Z","updated_at":"2026-10-24T13:14:17.000000Z"},{"id":4,"motor":"Vario 125","serviced_at":"2026-08-21","odometer_km":23400,"service_type":"Ganti oli mesin","cost":55000,"workshop":"AHASS Sleman","notes":null,"created_at":"2026-10-24T13:14:17.000000Z","updated_at":"2026-10-24T13:14:17.000000Z"},{"id":3,"motor":"Vario 125","serviced_at":"2026-06-09","odometer_km":21800,"service_type":"Servis rutin","cost":185000,"workshop":"AHASS Sleman","notes":"Bersihkan CVT, ganti busi","created_at":"2026-10-24T13:14:17.000000Z","updated_at":"2026-10-24T13:14:17.000000Z"},{"id":2,"motor":"Vario 125","serviced_at":"2026-04-18","odometer_km":19950,"service_type":"Ganti kampas rem depan","cost":70000,"workshop":"Bengkel Pak Min","notes":"Kampas sudah tipis","created_at":"2026-10-24T13:14:17.000000Z","updated_at":"2026-10-24T13:14:17.000000Z"},{"id":1,"motor":"Vario 125","serviced_at":"2026-03-02","odometer_km":18420,"service_type":"Ganti oli mesin","cost":55000,"workshop":"AHASS Sleman","notes":null,"created_at":"2026-10-24T13:14:17.000000Z","updated_at":"2026-10-24T13:14:17.000000Z"}]}
+GET /api/service-logs/7 -> 200
+{"data":{"id":7,"motor":"Vario 125","serviced_at":"2026-10-24","odometer_km":25000,"service_type":"Uji verifikasi laporan","cost":60000,"workshop":"AHASS Sleman","notes":"data sementara","created_at":"2026-10-24T13:24:04.000000Z","updated_at":"2026-10-24T13:24:04.000000Z"}}
+PUT /api/service-logs/7 -> 200
+{"data":{"id":7,"motor":"Vario 125","serviced_at":"2026-10-24","odometer_km":25000,"service_type":"Uji verifikasi laporan","cost":75000,"workshop":"AHASS Sleman","notes":"data sementara","created_at":"2026-10-24T13:24:04.000000Z","updated_at":"2026-10-24T13:24:04.000000Z"}}
+POST /api/service-logs (tidak valid) -> 422
+{"message":"Motor wajib diisi. (and 3 more errors)","errors":{"motor":["Motor wajib diisi."],"odometer_km":["Kilometer harus berupa angka bulat."],"service_type":["Jenis servis wajib diisi."],"cost":["Biaya tidak boleh kurang dari 0."]}}
+GET /api/service-logs tanpa token -> 401
+{"message":"Unauthenticated."}
+DELETE /api/service-logs/7 -> 200
+{"message":"Catatan dihapus."}
+POST /api/logout -> 200
+{"message":"Berhasil keluar."}

@@ -1,4 +1,4 @@
-name: uts-pi
+name: uts-pl
 
 services:
   db:
@@ -23,7 +23,7 @@ services:
   backend:
     build:
       context: ./backend
-    image: ${BACKEND_IMAGE:-uts-pi-backend:local}
+    image: ${BACKEND_IMAGE:-uts-pl-backend:local}
     restart: unless-stopped
     depends_on:
       db:
@@ -57,7 +57,7 @@ services:
       context: ./frontend
       args:
         VITE_API_URL: /api
-    image: ${FRONTEND_IMAGE:-uts-pi-frontend:local}
+    image: ${FRONTEND_IMAGE:-uts-pl-frontend:local}
     restart: unless-stopped
     depends_on:
       - backend
@@ -72,3 +72,4 @@ volumes:
 networks:
   app_net:
     driver: bridge
+

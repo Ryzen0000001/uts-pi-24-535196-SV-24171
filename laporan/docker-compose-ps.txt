@@ -1,4 +1,4 @@
-﻿NAME                IMAGE                   COMMAND                  SERVICE    CREATED         STATUS                   PORTS
-uts-pi-backend-1    uts-pi-backend:local    "entrypoint frankenpΓÇª"   backend    3 minutes ago   Up 3 minutes (healthy)   0.0.0.0:8000->8000/tcp, [::]:8000->8000/tcp
-uts-pi-db-1         mysql:8.4.13            "docker-entrypoint.sΓÇª"   db         5 minutes ago   Up 5 minutes (healthy)   3306/tcp, 33060/tcp
-uts-pi-frontend-1   uts-pi-frontend:local   "/docker-entrypoint.ΓÇª"   frontend   3 minutes ago   Up 3 minutes (healthy)   0.0.0.0:8080->80/tcp, [::]:8080->80/tcp
+NAME                IMAGE                   COMMAND                  SERVICE    CREATED             STATUS                       PORTS
+uts-pl-backend-1    uts-pl-backend:local    "entrypoint frankenp..."   backend    About an hour ago   Up About an hour (healthy)   0.0.0.0:8000->8000/tcp, [::]:8000->8000/tcp
+uts-pl-db-1         mysql:8.4.13            "docker-entrypoint.s..."   db         About an hour ago   Up About an hour (healthy)   3306/tcp, 33060/tcp
+uts-pl-frontend-1   uts-pl-frontend:local   "/docker-entrypoint...."   frontend   About an hour ago   Up About an hour (healthy)   0.0.0.0:8080->80/tcp, [::]:8080->80/tcp

@@ -1,8 +1,8 @@
-# Buku Servis — UTS Pengembangan Integrasi
+# Buku Servis — UTS Pengembangan Perangkat Lunak
 
 Aplikasi pencatatan servis motor: backend Laravel 12 (REST API + Sanctum), frontend Vue 3 (Axios), MySQL, seluruh sistem dijalankan dengan Docker Compose dan backend dilayani **FrankenPHP**.
 
-- Repository: <https://github.com/Ryzen0000001/uts-pi-24-535196-SV-24171>
+- Repository: <https://github.com/Ryzen0000001/uts-pl-24-535196-SV-24171>
 - NIM: 24/535196/SV/24171
 - Kelas: PL5B1
 
@@ -33,7 +33,7 @@ docker compose up -d --build
 - API langsung: <http://localhost:8000/api>
 - Akun demo: `demo@example.com` / `password123` (dibuat oleh `DemoSeeder` saat backend mulai)
 
-Data MySQL disimpan di named volume `uts-pi_db_data`, sehingga tetap ada setelah `docker compose down` lalu `docker compose up -d`.
+Data MySQL disimpan di named volume `uts-pl_db_data`, sehingga tetap ada setelah `docker compose down` lalu `docker compose up -d`.
 
 ### Perintah yang sering dipakai
 
@@ -95,6 +95,7 @@ Rahasia disimpan di **Settings → Secrets and variables → Actions**: `APP_KEY
 Image yang dihasilkan:
 
 ```
-ghcr.io/ryzen0000001/uts-pi-24-535196-sv-24171-backend:<commit-sha>
-ghcr.io/ryzen0000001/uts-pi-24-535196-sv-24171-frontend:<commit-sha>
+ghcr.io/ryzen0000001/uts-pl-24-535196-SV-24171-backend:<commit-sha>
+ghcr.io/ryzen0000001/uts-pl-24-535196-SV-24171-frontend:<commit-sha>
 ```
+
