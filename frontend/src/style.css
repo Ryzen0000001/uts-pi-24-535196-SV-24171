@@ -1,0 +1,158 @@
+:root {
+  --bg: #e5e8e1;
+  --surface: #f3f4ef;
+  --ink: #17233b;
+  --muted: #566176;
+  --line: #c3c9bf;
+  --amber: #e0a100;
+  --danger: #b3261e;
+  --radius: 3px;
+  color-scheme: light;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: 'Archivo', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  background: var(--bg);
+  color: var(--ink);
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+
+h1,
+h2 {
+  font-stretch: 72%;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.005em;
+}
+
+:focus-visible {
+  outline: 3px solid var(--amber);
+  outline-offset: 2px;
+}
+
+/* Formulir */
+.field {
+  display: grid;
+  gap: 0.3rem;
+}
+
+.field label {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.field .hint {
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.field input,
+.field textarea {
+  width: 100%;
+  font: inherit;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--ink);
+  border-radius: var(--radius);
+  padding: 0.55rem 0.65rem;
+}
+
+.field textarea {
+  resize: vertical;
+  min-height: 4.5rem;
+}
+
+.field input[aria-invalid='true'],
+.field textarea[aria-invalid='true'] {
+  border-color: var(--danger);
+  border-width: 2px;
+}
+
+.field .error {
+  font-size: 0.875rem;
+  color: var(--danger);
+  font-weight: 600;
+}
+
+/* Tombol */
+.btn {
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+  border-radius: var(--radius);
+  border: 1px solid var(--ink);
+  padding: 0.6rem 1.1rem;
+  background: var(--ink);
+  color: var(--surface);
+}
+
+.btn:hover:not(:disabled) {
+  background: #2c3d5e;
+}
+
+.btn:disabled {
+  opacity: 0.55;
+  cursor: progress;
+}
+
+.btn.plain {
+  background: transparent;
+  color: var(--ink);
+}
+
+.btn.plain:hover:not(:disabled) {
+  background: rgba(23, 35, 59, 0.08);
+}
+
+.link {
+  font: inherit;
+  font-weight: 600;
+  background: none;
+  border: 0;
+  padding: 0.15rem 0;
+  color: var(--ink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.link.danger {
+  color: var(--danger);
+}
+
+.link:hover {
+  text-decoration-thickness: 2px;
+}
+
+.alert {
+  border-left: 4px solid var(--danger);
+  background: var(--surface);
+  padding: 0.6rem 0.8rem;
+  font-weight: 600;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
+}
