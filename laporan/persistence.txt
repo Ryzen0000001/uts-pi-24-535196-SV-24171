@@ -1,0 +1,9 @@
+﻿SEBELUM DOWN: jumlah catatan = 5, id baru = 8
+docker compose down
+docker compose up -d
+docker compose ps:
+NAME                IMAGE                   COMMAND                  SERVICE    CREATED          STATUS                    PORTS
+uts-pi-backend-1    uts-pi-backend:local    "entrypoint frankenpΓÇª"   backend    31 seconds ago   Up 27 seconds (healthy)   0.0.0.0:8000->8000/tcp, [::]:8000->8000/tcp
+uts-pi-db-1         mysql:8.4.13            "docker-entrypoint.sΓÇª"   db         31 seconds ago   Up 31 seconds (healthy)   3306/tcp, 33060/tcp
+uts-pi-frontend-1   uts-pi-frontend:local   "/docker-entrypoint.ΓÇª"   frontend   31 seconds ago   Up 26 seconds (healthy)   0.0.0.0:8080->80/tcp, [::]:8080->80/tcp
+SESUDAH UP: jumlah catatan = 6; data id=8 ditemukan = True; service_type = Uji persistensi volume
