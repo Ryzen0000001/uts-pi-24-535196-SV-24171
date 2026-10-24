@@ -1,0 +1,1834 @@
+\documentclass[12pt,a4paper,oneside]{book}
+
+% ============================================================
+% Paket dasar
+% ============================================================
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[indonesian]{babel}
+\usepackage{mathptmx}
+\usepackage[scaled=0.92]{helvet}
+\usepackage{geometry}
+\geometry{left=3cm,right=2cm,top=2cm,bottom=2cm}
+\setlength{\headheight}{15pt}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+\usepackage{tocloft}
+\usepackage{setspace}
+\usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{enumitem}
+\usepackage{caption}
+\usepackage{titlesec}
+\usepackage{microtype}
+\usepackage{amsmath}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,shapes.geometric}
+\usepackage{ragged2e}
+\usepackage{etoolbox}
+\usepackage{textcomp}
+\usepackage{multirow}
+
+% ============================================================
+% Pengaturan umum
+% ============================================================
+\onehalfspacing
+\setlength{\parindent}{1cm}
+\setlength{\parskip}{0.15cm}
+\setcounter{tocdepth}{2}
+\setcounter{secnumdepth}{3}
+\renewcommand{\arraystretch}{1.15}
+\setlength{\emergencystretch}{2em}
+\sloppy
+
+\captionsetup{font=small,labelfont=bf,justification=centering}
+\captionsetup[table]{skip=6pt}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=black,
+  citecolor=black,
+  urlcolor=blue!50!black,
+  pdftitle={Laporan UTS Pengembangan Perangkat Lunak - Buku Servis},
+  pdfauthor={Rizendy Affarin},
+  pdfsubject={Laravel, Vue, Docker, FrankenPHP, CI/CD},
+  bookmarksnumbered=true
+}
+
+% ============================================================
+% Header dan footer
+% ============================================================
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\nouppercase{\leftmark}}
+\fancyhead[R]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancypagestyle{plain}{%
+  \fancyhf{}%
+  \fancyhead[R]{\thepage}%
+  \renewcommand{\headrulewidth}{0pt}%
+}
+
+% ============================================================
+% Judul bab dan daftar
+% ============================================================
+\titleformat{\chapter}[display]
+  {\normalfont\Large\bfseries}
+  {\chaptertitlename\ \thechapter}{0.5ex}{\Large}
+\titlespacing*{\chapter}{0pt}{-0.2cm}{0.8cm}
+
+\renewcommand{\cftchapfont}{\bfseries}
+\renewcommand{\cftchappagefont}{\bfseries}
+\renewcommand{\cftfigpresnum}{Gambar~}
+\renewcommand{\cfttabpresnum}{Tabel~}
+\setlength{\cftfignumwidth}{2.5cm}
+\setlength{\cfttabnumwidth}{2.2cm}
+
+% ============================================================
+% Gaya kode
+% ============================================================
+\definecolor{codegreen}{RGB}{28,110,70}
+\definecolor{codeblue}{RGB}{24,70,140}
+\definecolor{codered}{RGB}{150,45,45}
+\definecolor{codegray}{RGB}{110,110,110}
+\definecolor{codebg}{RGB}{247,247,244}
+
+\lstdefinestyle{proyek}{
+  backgroundcolor=\color{codebg},
+  commentstyle=\color{codegreen}\itshape,
+  keywordstyle=\color{codeblue}\bfseries,
+  stringstyle=\color{codered},
+  numberstyle=\tiny\color{codegray},
+  basicstyle=\ttfamily\footnotesize,
+  breakatwhitespace=false,
+  breaklines=true,
+  captionpos=b,
+  keepspaces=true,
+  numbers=left,
+  numbersep=8pt,
+  showspaces=false,
+  showstringspaces=false,
+  showtabs=false,
+  tabsize=2,
+  frame=single,
+  rulecolor=\color{black!25},
+  columns=fullflexible,
+  upquote=true,
+  literate={-}{-}1
+}
+\lstdefinelanguage{JavaScript}{
+  keywords={break, case, catch, const, continue, default, delete, do, else,
+            export, extends, finally, for, from, function, if, import, in,
+            instanceof, let, new, return, super, switch, this, throw, try,
+            typeof, var, void, while, with, yield, async, await, of, class},
+  sensitive=true,
+  comment=[l]{//},
+  morecomment=[s]{/*}{*/},
+  morestring=[b]',
+  morestring=[b]",
+  morestring=[b]`
+}
+
+\lstset{style=proyek}
+\renewcommand{\lstlistingname}{Kode}
+\renewcommand{\lstlistlistingname}{DAFTAR KODE}
+
+% ============================================================
+% Perintah bantu
+% ============================================================
+\newcommand{\repourl}{https://github.com/Ryzen0000001/uts-pl-24-535196-SV-24171}
+\newcommand{\ghcrbackend}{ghcr.io/ryzen0000001/uts-pl-24-535196-sv-24171-backend}
+\newcommand{\ghcrfrontend}{ghcr.io/ryzen0000001/uts-pl-24-535196-sv-24171-frontend}
+\newcommand{\demoakun}{\texttt{demo@example.com} / \texttt{password123}}
+
+\newcommand{\gambarpenting}[3][0.86\textwidth]{%
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=#1,height=0.78\textheight,keepaspectratio]{#2}
+    \caption{#3}
+  \end{figure}
+}
+
+\newcommand{\gambarlebar}[3][\textwidth]{%
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=#1]{#2}
+    \caption{#3}
+  \end{figure}
+}
+
+\newcommand{\isipostman}[2]{%
+  \IfFileExists{img/#1}{%
+    \begin{figure}[H]
+      \centering
+      \includegraphics[width=0.82\textwidth,height=0.78\textheight,keepaspectratio]{img/#1}
+      \caption{#2}
+    \end{figure}
+  }{%
+    \begin{figure}[H]
+      \centering
+      \fbox{%
+        \parbox{0.78\textwidth}{%
+          \centering\small
+          Tangkapan layar \texttt{#1} belum tersedia saat laporan ini disusun.
+          Permintaan dan status yang diuji tetap dicatat pada Tabel~\ref{tab:api}
+          dan transkrip Lampiran~\ref{lam:api}.
+        }%
+      }
+      \caption{#2}
+    \end{figure}
+  }%
+}
+
+% ============================================================
+% Dokumen
+% ============================================================
+\begin{document}
+
+% ---------- Halaman judul ----------
+\pagenumbering{alph}
+\begin{titlepage}
+  \thispagestyle{empty}
+  \begin{center}
+    \includegraphics[width=2.3cm]{img/lambang-ugm.png}\\[0.35cm]
+    {\small\bfseries UNIVERSITAS GADJAH MADA}\\[0.1cm]
+    {\small SEKOLAH VOKASI}\\[0.1cm]
+    {\small PROGRAM STUDI D-IV TEKNOLOGI REKAYASA PERANGKAT LUNAK}\\[1.1cm]
+
+    {\Large\bfseries LAPORAN UJIAN TENGAH SEMESTER}\\[0.25cm]
+    {\large Mata Kuliah Pengembangan Perangkat Lunak}\\[1.1cm]
+
+    {\LARGE\bfseries BUKU SERVIS}\\[0.3cm]
+    {\Large Aplikasi Pencatatan Servis Motor Berbasis Laravel, Vue, Docker, dan FrankenPHP}\\[1.4cm]
+
+    \begin{tabular}{ll}
+      \textbf{Disusun oleh} & : Rizendy Affarin \\
+      \textbf{NIM}          & : 24/535196/SV/24171 \\
+      \textbf{Kelas}        & : PL5B1 \\
+      \textbf{Dosen}        & : Galih Malela Damaraji \\
+    \end{tabular}
+
+    \vfill
+    {\bfseries YOGYAKARTA}\\
+    {\bfseries 2026}
+  \end{center}
+\end{titlepage}
+
+% ---------- Front matter ----------
+\frontmatter
+\pagestyle{plain}
+
+\chapter*{ABSTRAK}
+\addcontentsline{toc}{chapter}{ABSTRAK}
+\phantomsection
+
+Buku Servis adalah aplikasi web untuk mencatat riwayat servis motor. Setiap pengguna
+memiliki catatan sendiri yang berisi tanggal servis, odometer, jenis servis, biaya,
+bengkel, dan catatan. Laporan ini mendokumentasikan pembangunan aplikasi tersebut
+sebagai pemenuhan UTS mata kuliah Pengembangan Perangkat Lunak: REST API Laravel 12
+dengan Sanctum, antarmuka Vue 3 yang memakai Axios, MySQL, Docker Compose,
+FrankenPHP sebagai server backend, serta pipeline GitHub Actions yang menguji,
+membangun, dan mendorong image ke GHCR hanya dari branch \texttt{main}.
+
+Hasil pengujian menunjukkan 16 tes fitur lulus dengan 38 asersi. Seluruh endpoint
+selain \texttt{POST /api/login} menolak permintaan tanpa token dengan status 401.
+Pembuatan catatan mengembalikan 201, validasi mengembalikan 422, dan operasi baca,
+ubah, hapus mengembalikan 200. Ketiga container berjalan sehat; data tetap ada
+setelah \texttt{docker compose down} dan \texttt{docker compose up -d}. Backend
+terbukti dilayani FrankenPHP 1.13.3 dengan PHP 8.4.27, bukan \texttt{php artisan serve}
+atau PHP-FPM. Pipeline CI berjalan pada branch fitur, \texttt{dev}, dan pull request;
+job deploy hanya berjalan setelah push ke \texttt{main} dan menghasilkan image
+bertag commit SHA di GHCR.
+
+\vspace{0.4cm}
+\noindent\textbf{Kata kunci:} Laravel, Sanctum, Vue, Axios, Docker Compose,
+FrankenPHP, GitHub Actions, GHCR.
+
+\chapter*{KATA PENGANTAR}
+\addcontentsline{toc}{chapter}{KATA PENGANTAR}
+\phantomsection
+
+Laporan ini disusun untuk mendokumentasikan pekerjaan UTS Pengembangan Perangkat
+Lunak yang berfokus pada integrasi backend, frontend, basis data, container, dan
+CI/CD. Aplikasi yang dibangun bernama Buku Servis. Masalah yang diangkat sederhana:
+catatan servis motor sering tersebar di buku manual, pesan chat, atau struk yang
+mudah hilang, sehingga pemilik motor sulit mengetahui kapan servis terakhir dilakukan
+dan berapa biaya yang sudah dikeluarkan.
+
+Saya mengucapkan terima kasih kepada Bapak Galih Malela Damaraji selaku dosen
+pengampu, rekan-rekan kelas PL5B1, dan pihak-pihak yang membantu proses pengujian.
+Laporan ini berisi kode, tangkapan layar, keluaran perintah, serta kendala yang
+benar-benar ditemui selama pengerjaan. Bagian yang belum sempurna saya tulis apa
+adanya agar pembaca dapat menilai pekerjaan ini secara jujur.
+
+\vspace{0.6cm}
+\begin{flushright}
+  Yogyakarta, 24 Oktober 2026\\[1.2cm]
+  Rizendy Affarin
+\end{flushright}
+
+\begingroup
+\singlespacing
+\tableofcontents
+\listoffigures
+\listoftables
+\lstlistoflistings
+\endgroup
+
+% ---------- Isi ----------
+\mainmatter
+\pagestyle{fancy}
+
+\chapter{PENDAHULUAN}
+\label{chap:pendahuluan}
+
+\section{Latar Belakang}
+
+Motor adalah kendaraan yang perawatannya bergantung pada catatan. Penggantian oli
+mesin, kampas rem, ban, aki, dan servis CVT punya interval yang berbeda. Tanpa
+catatan, pemilik motor cenderung mengandalkan ingatan atau menebak dari suara mesin.
+Akibatnya servis bisa terlambat, biaya membengkak, dan riwayat perawatan tidak bisa
+dijelaskan saat motor dijual.
+
+Aplikasi pencatatan sederhana dapat menyelesaikan masalah tersebut asalkan dapat
+diakses dari browser, menyimpan data secara permanen, dan membatasi data berdasarkan
+pengguna. Karena itu proyek ini tidak hanya berhenti pada CRUD di satu komputer.
+Aplikasi harus berjalan sebagai beberapa container yang saling terhubung, memakai
+basis data MySQL, memiliki antarmuka Vue, dan melewati pipeline CI/CD. Persyaratan
+tersebut memaksa saya berlatih pada hal yang sering terlewat dalam tugas CRUD biasa:
+konfigurasi jaringan antar-container, migrasi basis data saat container mulai,
+penyimpanan volume, penanganan token, serta pemisahan rahasia dari repositori.
+
+Aplikasi yang dibangun diberi nama \textbf{Buku Servis}. Entitas utamanya adalah
+catatan servis dengan field motor, tanggal servis, odometer, jenis servis, biaya,
+bengkel, dan catatan. Setiap catatan dimiliki oleh satu pengguna. Autentikasi memakai
+Laravel Sanctum dengan token bearer. Registrasi publik tidak dibuka karena ketentuan
+tugas menyatakan semua endpoint selain login harus memakai token; akun demo dibuat
+oleh seeder saat backend pertama kali berjalan.
+
+\section{Rumusan Masalah}
+
+Berdasarkan latar belakang tersebut, masalah yang diselesaikan dalam laporan ini
+adalah:
+
+\begin{enumerate}[leftmargin=1.2cm]
+  \item Bagaimana membangun REST API Laravel yang seluruh endpoint selain login
+        dilindungi token Sanctum dan mengembalikan status HTTP yang sesuai?
+  \item Bagaimana menghubungkan frontend Vue 3 ke API tanpa menulis alamat API di
+        dalam komponen?
+  \item Bagaimana menjalankan backend, frontend, dan MySQL melalui Docker Compose
+        dengan jaringan service-name dan volume permanen?
+  \item Bagaimana memastikan backend benar-benar dilayani FrankenPHP, bukan
+        \texttt{php artisan serve} atau PHP-FPM?
+  \item Bagaimana menyusun alur Git dan GitHub Actions sehingga pengujian berjalan
+        di setiap branch, sedangkan deploy hanya terjadi dari \texttt{main}?
+\end{enumerate}
+
+\section{Tujuan}
+
+Tujuan yang ingin dicapai:
+
+\begin{enumerate}[leftmargin=1.2cm]
+  \item Menyediakan API CRUD catatan servis yang aman dan konsisten.
+  \item Menyediakan antarmuka login dan pengelolaan catatan servis yang memakai
+        token dari API.
+  \item Menjalankan seluruh sistem dengan satu perintah Docker Compose dan
+        memastikan data bertahan setelah container dihentikan.
+  \item Membuktikan penggunaan FrankenPHP melalui konfigurasi image dan log runtime.
+  \item Menerapkan CI/CD, branch protection, serta penyimpanan rahasia di GitHub
+        Secrets.
+  \item Mendokumentasikan proses, bukti pengujian, dan kendala secara jujur.
+\end{enumerate}
+
+\section{Ruang Lingkup}
+
+Ruang lingkup aplikasi dibatasi pada:
+
+\begin{itemize}[leftmargin=1.2cm]
+  \item Satu resource CRUD, yaitu \texttt{service\_logs} (catatan servis motor).
+  \item Autentikasi token melalui \texttt{POST /api/login}, \texttt{GET /api/me},
+        dan \texttt{POST /api/logout}. Tidak ada registrasi publik.
+  \item Frontend satu halaman untuk login dan satu halaman untuk daftar, tambah,
+        ubah, dan hapus catatan.
+  \item Basis data MySQL 8.4 dengan volume bernama.
+  \item Backend Laravel 12 + Sanctum yang dilayani FrankenPHP.
+  \item CI/CD GitHub Actions dengan job pengujian, build, dan deploy ke GHCR.
+\end{itemize}
+
+Di luar ruang lingkup: aplikasi mobile native, notifikasi pengingat servis,
+multi-bahasa, pembayaran, dan manajemen bengkel multi-cabang.
+
+\section{Manfaat}
+
+Secara praktis, aplikasi ini memberi cara cepat untuk mencatat servis dan melihat
+total biaya perawatan. Secara akademis, proyek ini menjadi latihan integrasi antara
+API, SPA, basis data, container, dan pipeline. Dari sisi dokumentasi, laporan ini
+menyimpan bukti eksekusi yang dapat diperiksa ulang: keluaran tes, status HTTP,
+log FrankenPHP, keluaran \texttt{docker compose ps}, dan tautan commit.
+
+\section{Sistematika Penulisan}
+
+\begin{description}[leftmargin=1.2cm,style=nextline]
+  \item[BAB I Pendahuluan] memuat latar belakang, rumusan masalah, tujuan, ruang
+        lingkup, manfaat, dan sistematika.
+  \item[BAB II Landasan Teori] membahas Laravel, Sanctum, Vue, Axios, Docker,
+        FrankenPHP, dan GitHub Actions.
+  \item[BAB III Analisis dan Perancangan] menjelaskan kebutuhan, model data,
+        rancangan API, rancangan antarmuka, dan rancangan deployment.
+  \item[BAB IV Implementasi] memaparkan kode dan konfigurasi yang ditulis.
+  \item[BAB V Hasil dan Pembahasan] menyajikan bukti pengujian per CPMK, alur data,
+        serta kendala dan solusinya.
+  \item[BAB VI Kesimpulan dan Saran] merangkum hasil dan memberi saran lanjutan.
+\end{description}
+
+\chapter{LANDASAN TEORI}
+\label{chap:teori}
+
+\section{Laravel dan Sanctum}
+
+Laravel adalah framework PHP dengan pola MVC. Pada versi 12, konfigurasi aplikasi
+dipusatkan di \texttt{bootstrap/app.php}; routing API dipisahkan dari routing web.
+Permintaan API masuk melalui \texttt{public/index.php}, melewati middleware global,
+middleware grup, lalu router. Controller mengembalikan respons JSON. Eloquent
+menjembatani model dengan tabel MySQL.
+
+Sanctum menyediakan token akses pribadi. Saat login berhasil, server membuat token
+dan menyimpan hash-nya di tabel \texttt{personal\_access\_tokens}. Token asli hanya
+dikirim sekali ke klien. Pada permintaan berikutnya, klien mengirim header
+\texttt{Authorization: Bearer <token>}. Middleware \texttt{auth:sanctum} memeriksa
+token tersebut. Jika tidak ada atau tidak valid, permintaan ditolak dengan 401.
+
+\section{Vue 3 dan Axios}
+
+Vue 3 dengan Composition API memakai \texttt{ref}, \texttt{computed}, dan
+\texttt{onMounted} untuk mengelola state halaman. Vue Router mengatur navigasi
+\texttt{/masuk} dan \texttt{/} serta menjaga halaman daftar agar hanya dapat dibuka
+saat token tersedia. Axios dipakai sebagai klien HTTP karena mendukung instance
+dengan \texttt{baseURL} dan interceptor.
+
+Interceptor request menambahkan token ke setiap permintaan. Interceptor response
+menangani 401 dengan memicu event \texttt{auth:expired}, sehingga aplikasi dapat
+kembali ke halaman masuk ketika token dicabut. Alamat API diambil dari
+\texttt{import.meta.env.VITE\_API\_URL}; nilai ini diisi saat build, bukan ditulis
+di dalam komponen.
+
+\section{Docker dan Docker Compose}
+
+Docker mengemas aplikasi beserta dependensinya ke dalam image. Container adalah
+instance image yang berjalan. Docker Compose mendefinisikan beberapa service dalam
+satu berkas YAML. Setiap service dapat memiliki image, build context, environment,
+port, volume, healthcheck, dan network.
+
+Dua hal penting dalam proyek ini adalah \emph{multi-stage build} dan \emph{named
+volume}. Multi-stage build memisahkan tahap kompilasi dari tahap runtime sehingga
+image akhir tidak membawa compiler atau \texttt{node\_modules}. Named volume
+menyimpan data MySQL di luar siklus hidup container, sehingga data tidak hilang
+saat container dihapus.
+
+\section{FrankenPHP}
+
+FrankenPHP adalah server aplikasi PHP yang dibangun di atas Caddy. Ia dapat
+menjalankan PHP sebagai worker dan menangani HTTP secara langsung. Pada proyek ini,
+FrankenPHP memakai konfigurasi Caddy untuk melayani direktori \texttt{public/}
+Laravel pada port 8000. Pilihan ini berbeda dari \texttt{php artisan serve} yang
+hanya untuk pengembangan, dan berbeda dari PHP-FPM yang memerlukan web server
+terpisah.
+
+FrankenPHP juga menulis access log ke stdout. Log tersebut dapat dibaca dengan
+\texttt{docker compose logs backend} dan menjadi bukti bahwa permintaan benar-benar
+melewati server tersebut.
+
+\section{GitHub Actions, GHCR, dan Branch Protection}
+
+GitHub Actions menjalankan workflow berdasarkan event. Pada proyek ini event yang
+dipakai adalah \texttt{push} ke \texttt{main}, \texttt{dev}, dan \texttt{feature/**},
+serta \texttt{pull\_request} ke \texttt{main} dan \texttt{dev}. Job
+\texttt{backend-test} menjalankan \texttt{php artisan test}; job
+\texttt{frontend-build} menjalankan \texttt{npm ci} dan \texttt{npm run build};
+job \texttt{deploy} hanya berjalan pada push ke \texttt{main}.
+
+GHCR (GitHub Container Registry) menyimpan image container. Image diberi tag commit
+SHA, bukan \texttt{latest}, agar versi yang di-deploy dapat dilacak kembali ke
+commit. Branch protection mencegah push langsung ke \texttt{main} dan \texttt{dev};
+perubahan harus melalui pull request dan status check harus lulus.
+
+\section{Arsitektur Sistem}
+
+Gambar~\ref{fig:arsitektur} menunjukkan hubungan antar-komponen. Browser memuat
+frontend dari Nginx pada port 8080. Permintaan ke \texttt{/api/} diteruskan Nginx ke
+service \texttt{backend:8000}. Backend memakai FrankenPHP, memproses route Laravel,
+dan mengakses MySQL melalui service \texttt{db:3306}. Semua service berada pada
+network \texttt{app\_net}; nama service dipakai sebagai alamat, bukan IP container.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[
+  node distance=1.1cm and 1.6cm,
+  box/.style={draw, rounded corners, align=center, minimum width=3.1cm,
+              minimum height=1.25cm, fill=blue!5, font=\small},
+  data/.style={draw, cylinder, shape border rotate=90, aspect=0.25,
+               align=center, minimum width=2.4cm, minimum height=1.4cm,
+               fill=orange!10, font=\small},
+  arrow/.style={-{Latex[length=2mm]}, thick}
+]
+\node[box] (browser) {Browser\\Vue 3 + Axios};
+\node[box, right=of browser] (nginx) {Nginx\\frontend:80};
+\node[box, right=of nginx] (backend) {FrankenPHP\\backend:8000};
+\node[data, below=of backend] (mysql) {MySQL 8.4\\db:3306};
+\node[box, below=of nginx] (volume) {Named volume\\\texttt{uts-pl\_db\_data}};
+
+\draw[arrow] (browser) -- node[above,font=\scriptsize]{HTTP :8080} (nginx);
+\draw[arrow] (nginx) -- node[above,font=\scriptsize]{/api/ proxy} (backend);
+\draw[arrow] (backend) -- node[right,font=\scriptsize]{Eloquent} (mysql);
+\draw[arrow, dashed] (mysql) -- (volume);
+\node[font=\scriptsize, below=0.5cm of browser] {network \texttt{app\_net}};
+\end{tikzpicture}
+\caption{Arsitektur runtime aplikasi Buku Servis}
+\label{fig:arsitektur}
+\end{figure}
+
+\section{Alur Data}
+
+Alur data dari klik pengguna sampai data tersimpan dijelaskan pada
+Gambar~\ref{fig:alur}. Contoh yang dipakai adalah penambahan catatan servis.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[
+  node distance=0.5cm,
+  proses/.style={draw, rounded corners, align=center, text width=2.45cm,
+                 minimum height=1.35cm, font=\scriptsize, fill=gray!5},
+  arrow/.style={-{Latex[length=2mm]}, thick}
+]
+\node[proses] (form) {Form Vue\\\texttt{ServiceForm}};
+\node[proses, right=of form] (axios) {Axios\\\texttt{POST /api/}\allowbreak\texttt{service-logs}};
+\node[proses, right=of axios] (nginx) {Nginx\\proxy \texttt{/api/}};
+\node[proses, right=of nginx] (route) {Laravel route\\+ Sanctum};
+\node[proses, right=of route] (valid) {FormRequest\\validasi};
+\node[proses, below=of valid] (ctrl) {Controller\\\texttt{store()}};
+\node[proses, left=of ctrl] (model) {Model\\\texttt{ServiceLog}};
+\node[proses, left=of model] (sql) {MySQL\\tabel \texttt{service\_logs}};
+\draw[arrow] (form) -- (axios);
+\draw[arrow] (axios) -- (nginx);
+\draw[arrow] (nginx) -- (route);
+\draw[arrow] (route) -- (valid);
+\draw[arrow] (valid) -- node[right,font=\tiny]{lolos} (ctrl);
+\draw[arrow] (ctrl) -- node[above,font=\tiny]{\texttt{create()}} (model);
+\draw[arrow] (model) -- node[above,font=\tiny]{INSERT} (sql);
+\draw[arrow, dashed] (sql) -- node[below,font=\tiny]{201 + JSON} (form);
+\end{tikzpicture}
+\caption{Alur penambahan catatan servis dari Vue sampai MySQL}
+\label{fig:alur}
+\end{figure}
+
+Jika validasi gagal, \texttt{FormRequest} menghentikan proses dan Laravel
+mengembalikan 422 berisi \texttt{errors} per field. Jika token tidak ada, middleware
+Sanctum mengembalikan 401 sebelum controller dijalankan. Jika token valid tetapi
+catatan milik pengguna lain, query \texttt{findOrFail} menghasilkan 404. Pola ini
+membuat respons dapat dibedakan oleh frontend dan oleh penguji API.
+
+\chapter{ANALISIS DAN PERANCANGAN}
+\label{chap:rancang}
+
+\section{Kebutuhan Fungsional}
+
+\begin{table}[H]
+\centering
+\caption{Kebutuhan fungsional aplikasi}
+\label{tab:fungsi}
+\small
+\begin{tabularx}{\textwidth}{@{}p{0.8cm} X >{\raggedright\arraybackslash}p{4.6cm}@{}}
+\toprule
+\textbf{No} & \textbf{Kebutuhan} & \textbf{Bukti} \\
+\midrule
+F-01 & Pengguna dapat masuk dengan email dan kata sandi, lalu menerima token. & \texttt{POST}\newline\texttt{/login} \\
+F-02 & Pengguna dapat keluar dan token aktif dicabut. & \texttt{POST}\newline\texttt{/logout} \\
+F-03 & Pengguna dapat melihat daftar catatan servis miliknya. & \texttt{GET}\newline\texttt{/service-logs} \\
+F-04 & Pengguna dapat menambah catatan servis. & \texttt{POST}\newline\texttt{/service-logs} \\
+F-05 & Pengguna dapat melihat detail satu catatan. & \texttt{GET}\newline\texttt{/service-logs/\{id\}} \\
+F-06 & Pengguna dapat mengubah catatan. & \texttt{PUT}\newline\texttt{/service-logs/\{id\}} \\
+F-07 & Pengguna dapat menghapus catatan. & \texttt{DELETE}\newline\texttt{/service-logs/\{id\}} \\
+F-08 & Data pengguna lain tidak dapat dibaca atau diubah. & query terbatas \texttt{user\_id} \\
+F-09 & Frontend menampilkan ringkasan odometer dan total biaya. & halaman daftar \\
+F-10 & Aplikasi menolak input tidak valid dengan pesan per field. & 422 + \texttt{errors} \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+Seluruh path pada kolom Bukti diawali \texttt{/api}.
+
+\section{Kebutuhan Nonfungsional}
+
+\begin{table}[H]
+\centering
+\caption{Kebutuhan nonfungsional dan cara pemenuhannya}
+\label{tab:nonfungsi}
+\begin{tabularx}{\textwidth}{@{}p{3.2cm} X@{}}
+\toprule
+\textbf{Aspek} & \textbf{Ketentuan} \\
+\midrule
+Keamanan & Token Sanctum; tidak ada registrasi publik; rahasia hanya di GitHub Secrets dan berkas \texttt{.env} yang tidak di-commit. \\
+Keterlacakan & Image GHCR diberi tag commit SHA, bukan \texttt{latest}. \\
+Portabilitas & Seluruh sistem berjalan dengan Docker Compose; tidak perlu PHP/Node di host. \\
+Konsistensi data & Validasi server-side; tipe kolom MySQL; \texttt{user\_id} wajib. \\
+Ketersediaan & Healthcheck backend \texttt{/up} dan frontend \texttt{/}; restart \texttt{unless-stopped}. \\
+Kemudahan operasi & Satu perintah \texttt{docker compose up -d --build}; migrasi otomatis dari entrypoint. \\
+Kualitas kode & PSR-4, FormRequest, service layer tipis, test fitur. \\
+Dokumentasi & README, Postman Collection, komentar pada konfigurasi non-obvious. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\section{Model Data}
+
+Aplikasi memakai tiga tabel utama: \texttt{users}, \texttt{service\_logs}, dan
+\texttt{personal\_access\_tokens}. Tabel \texttt{users} dimiliki Laravel sejak awal.
+Tabel \texttt{service\_logs} menyimpan catatan servis dan memiliki foreign key
+\texttt{user\_id}. Tabel \texttt{personal\_access\_tokens} menyimpan token Sanctum.
+
+\begin{table}[H]
+\centering
+\caption{Struktur tabel \texttt{service\_logs}}
+\label{tab:servicelogs}
+\begin{tabularx}{\textwidth}{@{}l l X@{}}
+\toprule
+\textbf{Kolom} & \textbf{Tipe} & \textbf{Keterangan} \\
+\midrule
+\texttt{id} & bigint unsigned & Primary key, auto increment. \\
+\texttt{user\_id} & bigint unsigned & Foreign key ke \texttt{users.id}, cascade delete. \\
+\texttt{motor} & varchar(100) & Nama atau tipe motor. \\
+\texttt{serviced\_at} & date & Tanggal servis, format \texttt{YYYY-MM-DD}. \\
+\texttt{odometer\_km} & int unsigned & Kilometer saat servis. \\
+\texttt{service\_type} & varchar(100) & Jenis pekerjaan servis. \\
+\texttt{cost} & int unsigned & Biaya dalam rupiah. \\
+\texttt{workshop} & varchar(100) nullable & Nama bengkel. \\
+\texttt{notes} & text nullable & Catatan tambahan. \\
+\texttt{created\_at}, \texttt{updated\_at} & timestamp & Audit waktu. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+Relasi yang dipakai: satu \texttt{User} memiliki banyak \texttt{ServiceLog};
+satu \texttt{ServiceLog} dimiliki satu \texttt{User}. Indeks gabungan
+\texttt{(user\_id, serviced\_at)} membantu query daftar yang selalu difilter
+berdasarkan pengguna dan diurutkan berdasarkan tanggal.
+
+\section{Rancangan API}
+
+API mengikuti gaya REST dengan prefix \texttt{/api}. Tabel~\ref{tab:api}
+merangkum endpoint, autentikasi, dan status yang diharapkan.
+
+\begin{table}[H]
+\centering
+\caption{Rancangan endpoint API}
+\label{tab:api}
+\small
+\begin{tabularx}{\textwidth}{@{}l l X l@{}}
+\toprule
+\textbf{Method} & \textbf{Endpoint} & \textbf{Keterangan} & \textbf{Status} \\
+\midrule
+POST & \texttt{/api/login} & Autentikasi, menghasilkan token & 200/401/422 \\
+GET & \texttt{/api/me} & Profil pemilik token & 200/401 \\
+POST & \texttt{/api/logout} & Mencabut token aktif & 200/401 \\
+GET & \texttt{/api/service-logs} & Daftar catatan milik pengguna & 200/401 \\
+POST & \texttt{/api/service-logs} & Menambah catatan & 201/401/422 \\
+GET & \texttt{/api/service-logs/\{id\}} & Detail catatan milik pengguna & 200/401/404 \\
+PUT & \texttt{/api/service-logs/\{id\}} & Mengubah catatan & 200/401/404/422 \\
+DELETE & \texttt{/api/service-logs/\{id\}} & Menghapus catatan & 200/401/404 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+Aturan validasi yang dipakai:
+
+\begin{itemize}[leftmargin=1.2cm]
+  \item \texttt{motor}: wajib, teks, maksimal 100 karakter.
+  \item \texttt{serviced\_at}: wajib, format tanggal \texttt{Y-m-d}.
+  \item \texttt{odometer\_km}: wajib, bilangan bulat, 0--9.999.999.
+  \item \texttt{service\_type}: wajib, teks, maksimal 100 karakter.
+  \item \texttt{cost}: wajib, bilangan bulat, 0--999.999.999.
+  \item \texttt{workshop}: opsional, teks, maksimal 100 karakter.
+  \item \texttt{notes}: opsional, teks, maksimal 1.000 karakter.
+\end{itemize}
+
+Pesan validasi disimpan di \texttt{App\textbackslash Support\textbackslash ValidationMessages}
+agar controller dan FormRequest memakai pesan yang sama. Untuk aturan ukuran
+(\texttt{min}/\texttt{max}) pada kolom numerik, pesan diberikan per atribut karena
+Laravel mengambil pesan size dari translator, bukan dari larik \texttt{messages()}
+biasa. Detail ini sempat menjadi kendala dan dibahas pada Subbab~\ref{sec:kendala}.
+
+\section{Rancangan Antarmuka}
+
+Ada dua halaman utama:
+
+\begin{enumerate}[leftmargin=1.2cm]
+  \item \textbf{Halaman masuk} (\texttt{/masuk}) berisi email, kata sandi, pesan
+        error 401/422, dan tombol masuk. Halaman ini tidak menampilkan tautan
+        registrasi karena registrasi publik ditutup.
+  \item \textbf{Halaman catatan} (\texttt{/}) berisi ringkasan odometer, total
+        biaya, formulir catat/ubah, dan daftar riwayat servis. Setiap baris memiliki
+        tombol Ubah dan Hapus. Hapus memakai konfirmasi dua langkah.
+\end{enumerate}
+
+Komponen \texttt{ServiceForm} dipakai untuk tambah dan ubah. Saat prop
+\texttt{editing} berisi catatan, formulir terisi data tersebut dan tombol berubah
+menjadi ``Simpan perubahan''. Saat batal, formulir kembali kosong. Ringkasan
+odometer memakai komponen \texttt{Odometer} yang menampilkan angka besar dan
+total biaya dihitung dari daftar yang sedang tampil.
+
+\section{Rancangan Deployment}
+
+\begin{table}[H]
+\centering
+\caption{Service pada Docker Compose}
+\label{tab:compose}
+\begin{tabularx}{\textwidth}{@{}l l X@{}}
+\toprule
+\textbf{Service} & \textbf{Image} & \textbf{Peran} \\
+\midrule
+\texttt{db} & \texttt{mysql:8.4.13} & Basis data, volume \texttt{uts-pl\_db\_data}, healthcheck \texttt{mysqladmin ping}. \\
+\texttt{backend} & \texttt{uts-pl-backend:local} & Laravel + FrankenPHP pada port 8000, healthcheck \texttt{/up}. \\
+\texttt{frontend} & \texttt{uts-pl-frontend:local} & Nginx pada port 80, diteruskan ke host 8080, proxy \texttt{/api/}. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+Kredensial MySQL diambil dari \texttt{.env} yang tidak di-commit. Berkas
+\texttt{.env.example} menyediakan nama variabel tanpa nilai rahasia. Backend
+menunggu \texttt{db} sehat sebelum mulai, lalu entrypoint menjalankan migrasi
+dengan percobaan ulang. Frontend dibangun dengan argumen \texttt{VITE\_API\_URL=/api},
+sehingga browser memanggil origin yang sama dan tidak ada masalah CORS.
+
+\section{Rancangan CI/CD dan Strategi Branch}
+
+\begin{table}[H]
+\centering
+\caption{Perilaku pipeline berdasarkan event}
+\label{tab:pipeline}
+\begin{tabularx}{\textwidth}{@{}l l X@{}}
+\toprule
+\textbf{Event} & \textbf{Job yang berjalan} & \textbf{Deploy} \\
+\midrule
+Push ke \texttt{feature/**} & \texttt{backend-test}, \texttt{frontend-build} & Tidak \\
+Pull request ke \texttt{dev} & \texttt{backend-test}, \texttt{frontend-build} & Tidak \\
+Push ke \texttt{dev} & \texttt{backend-test}, \texttt{frontend-build} & Tidak \\
+Pull request ke \texttt{main} & \texttt{backend-test}, \texttt{frontend-build} & Tidak \\
+Push ke \texttt{main} & \texttt{backend-test}, \texttt{frontend-build}, \texttt{deploy} & Ya, GHCR \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+Branch yang dipakai: \texttt{main} sebagai rilis, \texttt{dev} sebagai integrasi,
+dan \texttt{feature/docker-frankenphp} sebagai tempat pekerjaan fitur. Perubahan
+masuk melalui pull request. Branch protection pada \texttt{main} dan \texttt{dev}
+mewajibkan pull request, status check \texttt{backend-test} dan
+\texttt{frontend-build}, branch up-to-date, serta berlaku untuk administrator.
+
+\section{Skenario Pengujian}
+
+Pengujian dilakukan pada lima lapisan:
+
+\begin{enumerate}[leftmargin=1.2cm]
+  \item \textbf{Unit/feature test} dengan \texttt{php artisan test} untuk autentikasi,
+        otorisasi, validasi, dan CRUD.
+  \item \textbf{API manual} dengan curl dan Postman untuk memeriksa status HTTP
+        serta bentuk JSON.
+  \item \textbf{Antarmuka} dengan browser: login, tambah, ubah, hapus, dan kembali
+        ke halaman masuk setelah logout.
+  \item \textbf{Container} dengan \texttt{docker compose ps}, log backend, dan uji
+        persistensi volume.
+  \item \textbf{Pipeline} dengan push ke branch, pull request, dan push ke
+        \texttt{main}; status job dan image GHCR diperiksa.
+\end{enumerate}
+
+\chapter{IMPLEMENTASI}
+\label{chap:implementasi}
+
+\section{Lingkungan Pengembangan}
+
+Pekerjaan dilakukan pada Windows 11 dengan Docker Desktop. Versi perkakas yang
+tercatat saat pengerjaan ditunjukkan pada Tabel~\ref{tab:versi}. Versi di host
+berbeda dari versi di container; yang menjadi acuan runtime adalah versi di dalam
+image.
+
+\begin{table}[H]
+\centering
+\caption{Versi perkakas pengembangan dan runtime}
+\label{tab:versi}
+\begin{tabularx}{\textwidth}{@{}l l X@{}}
+\toprule
+\textbf{Perkakas} & \textbf{Versi} & \textbf{Keterangan} \\
+\midrule
+Docker Engine & 28.5.1 & Docker Desktop di Windows. \\
+Docker Compose & v2.40.3-desktop.1 & Perintah \texttt{docker compose}. \\
+Git & 2.45.1 & Windows. \\
+PHP host & 8.2.12 & Untuk menjalankan tes lokal. \\
+Composer host & 2.8.11 & Untuk dependensi lokal. \\
+Node host & 22.19.0 & Untuk build frontend lokal. \\
+PHP container & 8.4.27 & Dari image FrankenPHP. \\
+Composer container & 2.10.3 & Dari image \texttt{composer:2.10.3}. \\
+Node container & 22.23.4 & Tahap build frontend. \\
+Nginx container & 1.30.6 & Tahap runtime frontend. \\
+MySQL & 8.4.13 & Service \texttt{db}. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\section{Struktur Repositori}
+
+Repositori dipisahkan menjadi \texttt{backend}, \texttt{frontend}, \texttt{postman},
+\texttt{laporan}, dan berkas orkestrasi di akar. Pemisahan ini membuat build context
+Docker tetap kecil dan mencegah frontend ikut masuk ke image backend.
+
+\begin{lstlisting}[language=bash,caption={Struktur direktori utama repositori},label={kode:struktur}]
+.
+|-- .github/workflows/ci.yml
+|-- backend/                 # Laravel 12, Sanctum, FrankenPHP
+|   |-- app/Http/Controllers
+|   |-- app/Http/Requests
+|   |-- app/Models
+|   |-- docker/Caddyfile
+|   |-- docker/entrypoint.sh
+|   |-- Dockerfile
+|   |-- routes/api.php
+|   `-- tests/Feature
+|-- frontend/                # Vue 3, Vite, Axios, Nginx
+|   |-- docker/nginx.conf
+|   |-- src/api.js
+|   |-- src/views
+|   |-- Dockerfile
+|   `-- package.json
+|-- postman/buku-servis.postman_collection.json
+|-- laporan/
+|-- docker-compose.yml
+|-- .env.example
+`-- README.md
+\end{lstlisting}
+
+\section{Backend Laravel}
+
+\subsection{Routing dan Perlindungan Token}
+
+Berkas \texttt{routes/api.php} sengaja pendek. Hanya login yang berada di luar grup
+\texttt{auth:sanctum}. Semua route lain, termasuk \texttt{/me} dan
+\texttt{/logout}, berada di dalam grup. Tidak ada route registrasi.
+
+\begin{lstlisting}[language=PHP,caption={Routing API di \texttt{backend/routes/api.php}},label={kode:routes}]
+<?php
+
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ServiceLogController;
+use Illuminate\Support\Facades\Route;
+
+// Hanya login yang dapat diakses tanpa token.
+Route::post('/login', [AuthController::class, 'login']);
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/me', [AuthController::class, 'me']);
+    Route::post('/logout', [AuthController::class, 'logout']);
+
+    Route::apiResource('service-logs', ServiceLogController::class);
+});
+\end{lstlisting}
+
+\subsection{Autentikasi}
+
+\texttt{AuthController::login()} memvalidasi email dan kata sandi, mencari pengguna,
+dan memeriksa hash kata sandi. Jika gagal, respons 401 dengan pesan yang tidak
+membocorkan apakah email atau kata sandi yang salah. Jika berhasil, token dibuat
+dengan nama \texttt{spa} dan dikirim bersama data pengguna.
+
+\begin{lstlisting}[language=PHP,caption={Login dan logout pada \texttt{AuthController}},label={kode:auth}]
+public function login(Request $request): JsonResponse
+{
+    $data = $request->validate([
+        'email' => ['required', 'email'],
+        'password' => ['required', 'string'],
+    ], ValidationMessages::messages(), ValidationMessages::attributes());
+
+    $user = User::where('email', $data['email'])->first();
+
+    if (! $user || ! Hash::check($data['password'], $user->password)) {
+        return response()->json(['message' => 'Email atau kata sandi salah.'], 401);
+    }
+
+    return response()->json([
+        'user' => $user,
+        'token' => $user->createToken('spa')->plainTextToken,
+    ]);
+}
+
+public function logout(Request $request): JsonResponse
+{
+    $request->user()->currentAccessToken()->delete();
+
+    return response()->json(['message' => 'Berhasil keluar.']);
+}
+\end{lstlisting}
+
+\subsection{CRUD dan Kepemilikan Data}
+
+\texttt{ServiceLogController} memakai relasi \texttt{\$request->user()->serviceLogs()}
+untuk semua query. Cara ini lebih aman daripada menerima \texttt{user\_id} dari
+request karena pengguna tidak dapat memilih pemilik catatan. Method
+\texttt{findOwned()} memakai \texttt{findOrFail} pada relasi, sehingga catatan milik
+pengguna lain menghasilkan 404, bukan 403 yang membocorkan keberadaan data.
+
+\begin{lstlisting}[language=PHP,caption={Inti CRUD pada \texttt{ServiceLogController}},label={kode:crud}]
+public function index(Request $request): JsonResponse
+{
+    $logs = $request->user()
+        ->serviceLogs()
+        ->orderByDesc('serviced_at')
+        ->orderByDesc('id')
+        ->get();
+
+    return response()->json(['data' => $logs]);
+}
+
+public function store(ServiceLogRequest $request): JsonResponse
+{
+    $log = $request->user()->serviceLogs()->create($request->validated());
+
+    return response()->json(['data' => $log], 201);
+}
+
+public function update(ServiceLogRequest $request, string $id): JsonResponse
+{
+    $log = $this->findOwned($request, $id);
+    $log->update($request->validated());
+
+    return response()->json(['data' => $log]);
+}
+
+public function destroy(Request $request, string $id): JsonResponse
+{
+    $this->findOwned($request, $id)->delete();
+
+    return response()->json(['message' => 'Catatan dihapus.']);
+}
+
+private function findOwned(Request $request, string $id)
+{
+    return $request->user()->serviceLogs()->findOrFail($id);
+}
+\end{lstlisting}
+
+\subsection{Validasi}
+
+Validasi ditempatkan di \texttt{ServiceLogRequest} agar controller tetap ringkas
+dan aturan yang sama dipakai untuk \texttt{store} dan \texttt{update}. Pesan
+berbahasa Indonesia dipusatkan di \texttt{ValidationMessages}.
+
+\begin{lstlisting}[language=PHP,caption={Aturan validasi catatan servis},label={kode:validasi}]
+public function rules(): array
+{
+    return [
+        'motor' => ['required', 'string', 'max:100'],
+        'serviced_at' => ['required', 'date_format:Y-m-d'],
+        'odometer_km' => ['required', 'integer', 'min:0', 'max:9999999'],
+        'service_type' => ['required', 'string', 'max:100'],
+        'cost' => ['required', 'integer', 'min:0', 'max:999999999'],
+        'workshop' => ['nullable', 'string', 'max:100'],
+        'notes' => ['nullable', 'string', 'max:1000'],
+    ];
+}
+\end{lstlisting}
+
+\subsection{Migrasi dan Seeder}
+
+Migrasi membuat tabel \texttt{service\_logs} dengan foreign key dan indeks gabungan.
+\texttt{DemoSeeder} membuat akun \demoakun{} dan lima catatan contoh. Seeder
+dipanggil dari entrypoint, bukan dari route registrasi. Dengan begitu, aplikasi
+tetap memenuhi aturan ``semua endpoint selain login memerlukan token'' tanpa
+mengorbankan kemudahan pengujian.
+
+\begin{lstlisting}[language=PHP,caption={Potongan migrasi \texttt{service\_logs}},label={kode:migrasi}]
+Schema::create('service_logs', function (Blueprint $table) {
+    $table->id();
+    $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+    $table->string('motor', 100);
+    $table->date('serviced_at');
+    $table->unsignedInteger('odometer_km');
+    $table->string('service_type', 100);
+    $table->unsignedInteger('cost');
+    $table->string('workshop', 100)->nullable();
+    $table->text('notes')->nullable();
+    $table->timestamps();
+
+    $table->index(['user_id', 'serviced_at']);
+});
+\end{lstlisting}
+
+\subsection{Penanganan Permintaan Tanpa Token}
+
+Saat pengujian container, ditemukan bahwa permintaan tanpa header
+\texttt{Accept: application/json} dari Nginx sempat menghasilkan 500, bukan 401.
+Penyebabnya adalah middleware \texttt{Authenticate} mencoba mengarahkan tamu ke
+route bernama \texttt{login} yang tidak ada. Perbaikannya adalah memberi tahu
+middleware bahwa aplikasi ini API-only dan tidak memiliki halaman login web.
+
+\begin{lstlisting}[language=PHP,caption={Perbaikan redirect tamu pada \texttt{bootstrap/app.php}},label={kode:redirect}]
+->withMiddleware(function (Middleware $middleware): void {
+    // Aplikasi ini API-only. Tamu tidak boleh diarahkan ke route login web
+    // yang tidak ada; biarkan exception handler mengembalikan 401 JSON.
+    $middleware->redirectGuestsTo(fn () => null);
+})
+\end{lstlisting}
+
+Perbaikan ini disertai tes regresi
+\texttt{test\_guest\_without}\allowbreak\texttt{\_json\_accept}\allowbreak\texttt{\_header\_still\_gets\_401}.
+Kasus ini
+menunjukkan pentingnya menguji permintaan persis seperti yang dikirim proxy, bukan
+hanya \texttt{getJson()} yang selalu menambahkan header JSON.
+
+\section{Frontend Vue}
+
+\subsection{Konfigurasi Alamat API}
+
+Alamat API tidak ditulis di komponen. Nilainya berasal dari
+\texttt{VITE\_API\_URL}. Di lokal, \texttt{frontend/.env} dapat berisi
+\texttt{http://localhost:8000/api}; di Docker, build arg diisi \texttt{/api} dan
+Nginx meneruskan permintaan ke \texttt{backend:8000}.
+
+\begin{lstlisting}[language=JavaScript,caption={Instance Axios dan interceptor token},label={kode:axios}]
+const api = axios.create({
+  baseURL: import.meta.env.VITE_API_URL,
+  headers: { Accept: 'application/json' },
+})
+
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem('token')
+  if (token) config.headers.Authorization = `Bearer ${token}`
+  return config
+})
+
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    const url = error.config?.url ?? ''
+    const isAuthCall = url === '/login' || url === '/register'
+    if (error.response?.status === 401 && !isAuthCall) {
+      window.dispatchEvent(new Event('auth:expired'))
+    }
+    return Promise.reject(error)
+  },
+)
+\end{lstlisting}
+
+\subsection{State Autentikasi dan Router}
+
+Token dan data pengguna disimpan di \texttt{localStorage} agar sesi bertahan setelah
+halaman dimuat ulang. \texttt{auth.login()} memanggil API, menyimpan token, lalu
+router mengarahkan ke halaman catatan. \texttt{auth.logout()} tetap menghapus token
+lokal walaupun permintaan logout ke server gagal.
+
+\begin{lstlisting}[language=JavaScript,caption={Guard router dan penyimpanan sesi},label={kode:router}]
+router.beforeEach((to) => {
+  if (to.meta.auth && !auth.isLoggedIn) return '/masuk'
+  if (to.meta.guest && auth.isLoggedIn) return '/'
+})
+
+function save({ token, user }) {
+  state.token = token
+  state.user = user
+  localStorage.setItem('token', token)
+  localStorage.setItem('user', JSON.stringify(user))
+}
+\end{lstlisting}
+
+\subsection{Formulir dan Daftar Catatan}
+
+Formulir memakai \texttt{watch} pada prop \texttt{editing}. Saat pengguna menekan
+Ubah, data catatan disalin ke form. Saat simpan, payload dikirim dengan method
+\texttt{PUT} jika sedang mengubah, atau \texttt{POST} jika menambah. Respons 422
+dipetakan ke \texttt{errors} per field; respons 401 diserahkan ke interceptor.
+
+Daftar catatan diurutkan dari tanggal terbaru. Ringkasan menampilkan odometer
+tertinggi dan total biaya dari catatan yang tampil. Konfirmasi hapus tidak memakai
+\texttt{window.confirm}, tetapi state \texttt{confirmingId} agar tampilan konsisten
+dan dapat diuji secara visual.
+
+\section{Docker}
+
+\subsection{Backend: FrankenPHP Multi-stage}
+
+Dockerfile backend memiliki dua stage. Stage \texttt{vendor} memasang dependensi
+Composer. Stage \texttt{runtime} memakai image FrankenPHP yang sama, membuat user
+non-root \texttt{app}, menyalin hasil build, lalu menjalankan entrypoint. Perintah
+\texttt{composer install} sengaja dijalankan sebelum kode disalin agar layer
+dependensi tetap ter-cache saat hanya kode yang berubah.
+
+\begin{lstlisting}[language=bash,caption={Bagian penting Dockerfile backend},label={kode:backenddocker}]
+FROM dunglas/frankenphp:1.13.3-php8.4-alpine AS vendor
+RUN install-php-extensions pdo_mysql intl bcmath opcache
+COPY --from=composer:2.10.3 /usr/bin/composer /usr/local/bin/composer
+WORKDIR /app
+COPY composer.json composer.lock ./
+RUN composer install --no-dev --no-scripts --no-autoloader \
+    --no-interaction --prefer-dist --no-progress
+COPY . .
+RUN composer dump-autoload --no-dev --optimize --classmap-authoritative
+
+FROM dunglas/frankenphp:1.13.3-php8.4-alpine AS runtime
+RUN install-php-extensions pdo_mysql intl bcmath opcache \
+    && addgroup -S app && adduser -S -G app -h /app app
+WORKDIR /app
+COPY --from=vendor --chown=app:app /app /app
+COPY --chown=app:app docker/Caddyfile /etc/caddy/Caddyfile
+COPY --chown=app:app docker/entrypoint.sh /usr/local/bin/entrypoint
+USER app
+EXPOSE 8000
+HEALTHCHECK CMD wget -q -O /dev/null http://127.0.0.1:8000/up || exit 1
+ENTRYPOINT ["entrypoint"]
+CMD ["frankenphp", "run", "--config", "/etc/caddy/Caddyfile"]
+\end{lstlisting}
+
+Konfigurasi Caddy dibuat minimal: root di \texttt{/app/public}, \texttt{php\_server},
+kompresi, dan access log ke stdout. Tidak ada port admin yang dibuka.
+
+\begin{lstlisting}[language=bash,caption={Konfigurasi FrankenPHP pada \texttt{docker/Caddyfile}},label={kode:caddy}]
+{
+    frankenphp
+    order php_server before file_server
+    admin off
+}
+
+:8000 {
+    root * /app/public
+    encode zstd br gzip
+    log {
+        output stdout
+        format console
+    }
+    php_server
+}
+\end{lstlisting}
+
+Entrypoint menunggu MySQL siap, menjalankan migrasi dengan maksimal 30 percobaan,
+menjalankan \texttt{DemoSeeder}, lalu membuat cache konfigurasi dan route. Pola ini
+membuat container backend tidak langsung gagal ketika MySQL belum menerima koneksi.
+
+\begin{lstlisting}[language=bash,caption={Entrypoint backend},label={kode:entrypoint}]
+#!/bin/sh
+set -eu
+
+attempt=1
+until php artisan migrate --force --no-interaction; do
+    if [ "$attempt" -ge 30 ]; then
+        echo "Migrasi gagal setelah $attempt percobaan." >&2
+        exit 1
+    fi
+    echo "Basis data belum siap (percobaan $attempt/30), menunggu 2 detik..." >&2
+    attempt=$((attempt + 1))
+    sleep 2
+done
+
+php artisan db:seed --class=DemoSeeder --force --no-interaction
+php artisan config:cache
+php artisan route:cache
+
+exec "$@"
+\end{lstlisting}
+
+\subsection{Frontend: Node Build dan Nginx Runtime}
+
+Frontend memakai dua stage. Stage \texttt{build} memakai Node 22.23.4, menyalin
+\texttt{package.json} dan \texttt{package-lock.json} lebih dulu, menjalankan
+\texttt{npm ci}, lalu \texttt{npm run build}. Stage runtime hanya menyalin
+\texttt{dist} ke Nginx. Tidak ada \texttt{node\_modules} di image akhir.
+
+\begin{lstlisting}[language=bash,caption={Dockerfile frontend dua tahap},label={kode:frontenddocker}]
+FROM node:22.23.4-alpine AS build
+WORKDIR /app
+COPY package.json package-lock.json ./
+RUN npm ci --no-audit --no-fund
+COPY . .
+ARG VITE_API_URL=/api
+ENV VITE_API_URL=$VITE_API_URL
+RUN npm run build
+
+FROM nginx:1.30.6-alpine3.24 AS runtime
+COPY docker/nginx.conf /etc/nginx/conf.d/default.conf
+COPY --from=build /app/dist /usr/share/nginx/html
+EXPOSE 80
+HEALTHCHECK CMD wget -q -O /dev/null http://127.0.0.1/ || exit 1
+\end{lstlisting}
+
+Nginx memakai \texttt{resolver 127.0.0.11} dan variabel \texttt{\$backend} agar
+alamat service \texttt{backend} diperbarui melalui DNS internal Docker. Penulisan
+IP container di konfigurasi dihindari karena IP dapat berubah saat container
+dibuat ulang.
+
+\begin{lstlisting}[language=bash,caption={Proxy \texttt{/api/} pada Nginx},label={kode:nginx}]
+resolver 127.0.0.11 valid=10s ipv6=off;
+set $backend http://backend:8000;
+
+location /api/ {
+    proxy_pass $backend$request_uri;
+    proxy_http_version 1.1;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $scheme;
+}
+\end{lstlisting}
+
+\subsection{Docker Compose}
+
+Berkas \texttt{docker-compose.yml} mendefinisikan tiga service dan satu volume.
+Backend menunggu \texttt{db} berstatus sehat. Frontend menunggu backend, tetapi
+tetap dapat mulai sebelum backend siap karena Nginx akan mengembalikan 502 sampai
+backend hidup; healthcheck frontend hanya memeriksa halaman statis.
+
+\begin{lstlisting}[language=bash,caption={Ringkasan service pada \texttt{docker-compose.yml}},label={kode:compose}]
+name: uts-pl
+
+services:
+  db:
+    image: mysql:8.4.13
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+    volumes:
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -u root -p\"$$MYSQL_ROOT_PASSWORD\" --silent"]
+
+  backend:
+    build: ./backend
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DB_HOST: db
+      DB_DATABASE: ${DB_DATABASE}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "8000:8000"
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        VITE_API_URL: /api
+    ports:
+      - "8080:80"
+
+volumes:
+  db_data:
+\end{lstlisting}
+
+\subsection{\texttt{.dockerignore} dan Rahasia}
+
+Setiap build context memiliki \texttt{.dockerignore}. Backend mengabaikan
+\texttt{vendor}, \texttt{.env}, \texttt{storage/logs}, dan cache. Frontend
+mengabaikan \texttt{node\_modules}, \texttt{dist}, dan \texttt{.env}. Tidak ada
+\texttt{ARG} atau \texttt{ENV} berisi kata sandi di Dockerfile. Nilai rahasia masuk
+saat runtime melalui environment Compose yang dibaca dari \texttt{.env} yang tidak
+di-commit.
+
+\section{CI/CD}
+
+Workflow \texttt{.github/workflows/ci.yml} memiliki tiga job. Job
+\texttt{backend-test} memakai PHP 8.4, ekstensi SQLite, dan Composer; job
+\texttt{frontend-build} memakai Node 22 dan \texttt{npm ci}; job \texttt{deploy}
+memakai Buildx, login ke GHCR, lalu mendorong dua image dengan tag
+\texttt{\$\{\{ github.sha \}\}}.
+
+\begin{lstlisting}[language=bash,caption={Kondisi job deploy},label={kode:deploy}]
+deploy:
+  name: deploy
+  if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+  needs:
+    - backend-test
+    - frontend-build
+  runs-on: ubuntu-latest
+\end{lstlisting}
+
+Nama image dihitung dari \texttt{GITHUB\_REPOSITORY} dengan huruf kecil. Karena
+repository bernama \texttt{Ryzen0000001/uts-pl-24-535196-SV-24171}, nama image
+menjadi \ghcrbackend{} dan \ghcrfrontend{}. Tag SHA membuat setiap deploy dapat
+dihubungkan ke commit yang tepat.
+
+\begin{lstlisting}[language=bash,caption={Penentuan nama image GHCR},label={kode:ghcr}]
+echo "BACKEND_IMAGE=ghcr.io/${GITHUB_REPOSITORY,,}-backend" >> "$GITHUB_ENV"
+echo "FRONTEND_IMAGE=ghcr.io/${GITHUB_REPOSITORY,,}-frontend" >> "$GITHUB_ENV"
+\end{lstlisting}
+
+Rahasia yang disimpan di GitHub Secrets: \texttt{APP\_KEY}, \texttt{DB\_DATABASE},
+\texttt{DB\_USERNAME}, \texttt{DB\_PASSWORD}, dan \texttt{DB\_ROOT\_PASSWORD}.
+Tidak ada nilai rahasia di dalam repository, Dockerfile, atau workflow.
+
+\section{Cara Menjalankan}
+
+Langkah reproduksi dari repositori:
+
+\begin{lstlisting}[language=bash,caption={Menjalankan seluruh sistem dari nol},label={kode:jalankan}]
+git clone https://github.com/Ryzen0000001/uts-pl-24-535196-SV-24171.git
+cd uts-pl-24-535196-SV-24171
+cp .env.example .env
+# isi APP_KEY, DB_PASSWORD, dan DB_ROOT_PASSWORD
+docker compose up -d --build
+docker compose ps
+\end{lstlisting}
+
+Setelah ketiga container sehat, frontend dapat dibuka di
+\texttt{http://localhost:8080} dan API di \texttt{http://localhost:8000/api}.
+Akun demo: \demoakun.
+
+\chapter{HASIL DAN PEMBAHASAN}
+\label{chap:hasil}
+
+\section{Metode Pengujian}
+
+Pengujian tidak hanya memeriksa ``berhasil'' atau ``gagal''. Setiap bukti diambil
+dari eksekusi nyata dan disimpan di direktori \texttt{laporan/}. Untuk API, status
+HTTP dan potongan body dicatat. Untuk container, keluaran \texttt{docker compose ps}
+dan log backend disimpan. Untuk pipeline, tautan run dan tangkapan layar halaman
+Actions diambil setelah run selesai.
+
+\section{CPMK 1: REST API, Autentikasi, dan CRUD}
+
+\subsection{Hasil Tes Otomatis}
+
+Perintah \texttt{php artisan test} dijalankan di folder \texttt{backend}. Hasil
+terakhir: \textbf{16 tes lulus, 38 asersi}. Tes mencakup registrasi yang tidak
+tersedia, login valid dan tidak valid, logout yang mencabut token, akses tamu ke
+semua endpoint, kepemilikan data, validasi, serta CRUD.
+
+\begin{lstlisting}[language=bash,caption={Keluaran \texttt{php artisan test} (ringkas)},label={kode:test}]
+PASS  Tests\Unit\ExampleTest
+PASS  Tests\Feature\AuthTest
+  OK register endpoint is not exposed
+  OK login with invalid email returns 422
+  OK login with valid credentials returns token
+  OK login with wrong password returns 401
+  OK logout revokes the token
+  OK me without token returns 401
+PASS  Tests\Feature\ExampleTest
+PASS  Tests\Feature\ServiceLogTest
+  OK guest gets 401 on every endpoint
+  OK guest without json accept header still gets 401
+  OK index lists only own logs
+  OK store creates log and returns 201
+  OK store with invalid data returns 422
+  OK show returns own log but 404 for other users log
+  OK update changes the log
+  OK destroy deletes the log
+
+Tests: 16 passed (38 assertions)
+Duration: 0.45s
+\end{lstlisting}
+
+Keluaran lengkap ada pada Lampiran~\ref{lam:test}. Tes
+\texttt{guest without json accept header still gets 401} adalah tes yang ditambahkan
+setelah menemukan bug 500 pada proxy Nginx. Tanpa tes ini, bug tersebut hanya akan
+muncul saat diuji dari browser atau curl tanpa header JSON.
+
+\subsection{Verifikasi API Manual}
+
+Verifikasi dilakukan terhadap API yang berjalan di container, bukan server
+pengembangan. Tabel~\ref{tab:hasilapi} merangkum hasilnya. Transkrip lengkap ada
+pada Lampiran~\ref{lam:api}; token pada transkrip disamarkan.
+
+\begin{table}[H]
+\centering
+\caption{Hasil verifikasi status HTTP API}
+\label{tab:hasilapi}
+\begin{tabularx}{\textwidth}{@{}l l X l@{}}
+\toprule
+\textbf{Method} & \textbf{Endpoint} & \textbf{Skenario} & \textbf{Status} \\
+\midrule
+POST & \texttt{/api/login} & Kredensial demo benar & 200 \\
+POST & \texttt{/api/service-logs} & Payload valid & 201 \\
+GET & \texttt{/api/service-logs} & Daftar milik pengguna & 200 \\
+GET & \texttt{/api/service-logs/\{id\}} & Catatan milik sendiri & 200 \\
+PUT & \texttt{/api/service-logs/\{id\}} & Ubah biaya & 200 \\
+POST & \texttt{/api/service-logs} & \texttt{motor} kosong, \texttt{odometer} bukan angka, biaya negatif & 422 \\
+GET & \texttt{/api/service-logs} & Tanpa header token & 401 \\
+DELETE & \texttt{/api/service-logs/\{id\}} & Hapus catatan uji & 200 \\
+POST & \texttt{/api/logout} & Cabut token & 200 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+Contoh respons 422 dari pengujian:
+
+\begin{lstlisting}[language=bash,caption={Contoh respons validasi 422},label={kode:422}]
+{"message":"Motor wajib diisi. (and 3 more errors)",
+ "errors":{
+   "motor":["Motor wajib diisi."],
+   "odometer_km":["Kilometer harus berupa angka bulat."],
+   "service_type":["Jenis servis wajib diisi."],
+   "cost":["Biaya tidak boleh kurang dari 0."]
+ }}
+\end{lstlisting}
+
+\subsection{Postman Collection}
+
+Berkas \texttt{postman/buku-servis.postman\_collection.json} berisi tiga folder:
+Auth (Login, Me, Logout), Service Logs (List, Create, Create invalid, Show, Update,
+Delete), dan Tanpa token (List tanpa token). Variabel koleksi \texttt{baseUrl}
+dapat diubah ke \texttt{http://localhost:8000/api} atau
+\texttt{http://localhost:8080/api}. Skrip tes pada Login menyimpan token ke variabel
+koleksi; skrip pada Create menyimpan \texttt{logId}; skrip pada Create invalid dan
+List tanpa token memeriksa status 422 dan 401.
+
+\isipostman{postman-login.png}{Respons login di Postman dan penyimpanan token}
+\isipostman{postman-create-201.png}{Respons pembuatan catatan dengan status 201}
+\isipostman{postman-422.png}{Respons validasi dengan status 422}
+\isipostman{postman-401.png}{Respons tanpa token dengan status 401}
+
+\section{CPMK 2: Frontend Vue dan Integrasi Axios}
+
+Antarmuka diuji dengan browser pada alamat \texttt{http://localhost:8080}. Alur yang
+diuji: masuk dengan akun demo, melihat daftar, menambah catatan, mengubah catatan,
+menghapus catatan, lalu keluar. Tangkapan layar diambil dari aplikasi yang berjalan
+di container, bukan mockup.
+
+\gambarpenting{img/login.png}{Halaman masuk sebelum autentikasi}
+\label{fig:login}
+
+\gambarpenting{img/dashboard.png}{Halaman daftar catatan setelah login}
+\label{fig:dashboard}
+
+Formulir tambah diisi dengan data uji: motor Vario 125, tanggal 24 Oktober 2026,
+odometer 25.120 km, jenis servis ``Ganti oli gardan'', biaya Rp35.000, bengkel
+AHASS Sleman, dan catatan ``Servis pagi, antre sebentar''. Sebelum disimpan,
+ringkasan menunjukkan servis terakhir 12 Oktober 2026 dengan total Rp625.000 dari
+lima catatan. Setelah disimpan, catatan muncul di bagian atas daftar karena
+diurutkan berdasarkan tanggal terbaru; ringkasan berubah menjadi Rp660.000 dari
+enam catatan.
+
+\gambarpenting{img/tambah-form.png}{Formulir tambah catatan yang sudah diisi}
+\label{fig:tambahform}
+
+\gambarpenting{img/tambah-hasil.png}{Catatan baru muncul di daftar setelah disimpan}
+\label{fig:tambahhasil}
+
+Untuk mengubah, tombol ``Ubah'' pada baris catatan mengisi formulir dan mengubah
+judul menjadi ``Ubah catatan''. Biaya diubah dari Rp35.000 menjadi Rp40.000 dan
+catatan diganti menjadi ``Harga naik, tetap di AHASS''. Setelah disimpan, daftar
+dimuat ulang dan total biaya pada ringkasan menjadi Rp665.000.
+
+\gambarpenting{img/ubah-form.png}{Formulir ubah dengan data catatan terpilih}
+\label{fig:ubahform}
+
+\gambarpenting{img/ubah-hasil.png}{Daftar setelah biaya diubah}
+\label{fig:ubahhasil}
+
+Hapus memakai konfirmasi di dalam baris. Pengguna harus menekan ``Ya, hapus'';
+tombol ``Batal'' menutup konfirmasi tanpa mengirim permintaan. Setelah catatan
+Ganti oli gardan dihapus, daftar kembali berisi lima catatan dengan total
+Rp625.000 dan pesan ``Catatan dihapus.'' muncul.
+
+\gambarpenting{img/hapus-konfirmasi.png}{Konfirmasi hapus dua langkah}
+\label{fig:hapuskonfirmasi}
+
+\gambarpenting{img/hapus-hasil.png}{Daftar setelah catatan dihapus}
+\label{fig:hapushasil}
+
+Dari sisi integrasi, frontend memanggil \texttt{/api/...} pada origin yang sama
+(\texttt{localhost:8080}). Nginx meneruskan ke backend. Karena token dikirim pada
+header \texttt{Authorization}, tidak ada cookie lintas origin dan tidak ada
+konfigurasi CORS khusus di frontend. Jika token dicabut, interceptor 401 memicu
+kembali ke halaman masuk.
+
+\section{CPMK 3: Docker Compose, FrankenPHP, dan Persistensi}
+
+\subsection{Status Container}
+
+Setelah \texttt{docker compose up -d --build}, ketiga container berjalan dan sehat.
+Tabel~\ref{tab:status} merangkum status dari \texttt{docker compose ps}; keluaran
+mentahnya ada pada Lampiran~\ref{lam:ps}.
+
+\begin{table}[H]
+\centering
+\caption{Status container dari \texttt{docker compose ps}}
+\label{tab:status}
+\small
+\begin{tabularx}{\textwidth}{@{}l l l X@{}}
+\toprule
+\textbf{Container} & \textbf{Service} & \textbf{Image} & \textbf{Status dan port} \\
+\midrule
+\texttt{uts-pl-backend-1} & backend & \texttt{uts-pl-backend:local} & Up (healthy), \texttt{0.0.0.0:8000->8000/tcp} \\
+\texttt{uts-pl-db-1} & db & \texttt{mysql:8.4.13} & Up (healthy), port internal 3306 \\
+\texttt{uts-pl-frontend-1} & frontend & \texttt{uts-pl-frontend:local} & Up (healthy), \texttt{0.0.0.0:8080->80/tcp} \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{Bukti FrankenPHP}
+
+Log backend memuat baris startup FrankenPHP dan versi PHP 8.4.27. Access log
+menunjukkan permintaan \texttt{POST /api/login}, \texttt{POST /api/service-logs},
+\texttt{GET /api/service-logs}, \texttt{PUT}, \texttt{DELETE}, dan respons 401
+untuk permintaan tanpa token. Header respons juga memuat
+\texttt{Server: FrankenPHP Caddy}. Ini membuktikan backend tidak dijalankan dengan
+\texttt{php artisan serve} atau PHP-FPM.
+
+\begin{lstlisting}[language=bash,caption={Potongan bukti log FrankenPHP},label={kode:franken}]
+STARTUP: {"logger":"frankenphp","msg":"FrankenPHP started","php_version":"8.4.27",
+          "total_threads":48,"worker_threads":0,"max_threads":48}
+POST /api/login -> 200
+POST /api/service-logs -> 201
+GET /api/service-logs -> 200
+GET /api/service-logs/7 -> 200
+PUT /api/service-logs/7 -> 200
+POST /api/service-logs -> 422
+GET /api/service-logs -> 401
+DELETE /api/service-logs/7 -> 200
+POST /api/logout -> 200
+\end{lstlisting}
+
+Pemeriksaan proses di dalam container juga menunjukkan perintah
+\texttt{frankenphp run --config /etc/caddy/Caddyfile} dan user \texttt{app}, bukan
+root. Image backend berukuran sekitar 374 MB; image frontend sekitar 92,9 MB.
+Image frontend tidak memuat \texttt{node\_modules}, dan image backend tidak memuat
+Composer.
+
+\subsection{Persistensi Volume}
+
+Uji persistensi dilakukan dengan membuat catatan uji, menghentikan seluruh
+container tanpa menghapus volume, lalu menyalakannya kembali. Catatan dengan id 8
+masih ada setelah \texttt{docker compose up -d}. Setelah verifikasi, catatan uji
+dihapus agar data demo tetap rapi.
+
+\begin{lstlisting}[language=bash,caption={Hasil uji persistensi},label={kode:persistensi}]
+SEBELUM DOWN: id uji = 8, jumlah catatan = 6
+docker compose down
+docker compose up -d
+backend /up -> 200
+SESUDAH UP: jumlah catatan = 6; data id=8 ditemukan = True;
+              service_type = Uji persistensi volume
+Pembersihan: DELETE id=8 -> {"message":"Catatan dihapus."}
+\end{lstlisting}
+
+\section{CPMK 4: Git, Branch Protection, dan CI/CD}
+
+\subsection{Repositori dan Branch}
+
+{\raggedright
+Repositori publik berada di
+\url{https://github.com/Ryzen0000001/uts-pl-24-535196-SV-24171}.
+Branch yang ada: \texttt{main},
+\texttt{dev}, dan \texttt{feature/docker-frankenphp}. Pekerjaan fitur masuk ke
+\texttt{dev} melalui PR \#1, lalu \texttt{dev} masuk ke \texttt{main} melalui PR
+\#2. Kedua PR sudah digabung dan branch fitur tetap disimpan sebagai jejak
+pekerjaan.\par}
+
+\gambarpenting[0.9\textwidth]{img/repo-home.png}{Halaman utama repositori publik}
+\label{fig:repohome}
+
+\gambarpenting[0.9\textwidth]{img/repo-branches.png}{Daftar branch \texttt{main}, \texttt{dev}, dan fitur}
+\label{fig:repobranches}
+
+\gambarpenting[0.9\textwidth]{img/repo-pulls.png}{Dua pull request yang sudah digabung}
+\label{fig:repopulls}
+
+\gambarpenting[0.82\textwidth]{img/pr-1.png}{PR \#1: fitur Docker dan FrankenPHP masuk ke \texttt{dev}}
+\label{fig:pr1}
+
+\gambarpenting[0.82\textwidth]{img/pr-2.png}{PR \#2: \texttt{dev} masuk ke \texttt{main}}
+\label{fig:pr2}
+
+\subsection{Branch Protection}
+
+Aturan pada \texttt{main} dan \texttt{dev} mewajibkan pull request sebelum merge,
+status check \texttt{backend-test} dan \texttt{frontend-build}, serta branch yang
+up-to-date. Opsi ``Do not allow bypassing the above settings'' diaktifkan sehingga
+aturan juga berlaku untuk administrator. Force push dan penghapusan branch
+dinonaktifkan.
+
+\gambarpenting[0.88\textwidth]{img/branch-protection-main-crop.png}{Branch protection pada \texttt{main}}
+\label{fig:protmain}
+
+\gambarpenting[0.88\textwidth]{img/branch-protection-dev-crop.png}{Branch protection pada \texttt{dev}}
+\label{fig:protdev}
+
+\subsection{GitHub Secrets}
+
+Lima rahasia disimpan di \texttt{Settings > Secrets and variables > Actions}:
+\texttt{APP\_KEY}, \texttt{DB\_DATABASE}, \texttt{DB\_USERNAME},
+\texttt{DB\_PASSWORD}, dan \texttt{DB\_ROOT\_PASSWORD}. Halaman secrets hanya
+menampilkan nama, bukan nilai.
+
+\gambarpenting[0.78\textwidth]{img/github-secrets-crop.png}{Daftar GitHub Secrets tanpa nilai rahasia}
+\label{fig:secrets}
+
+\subsection{Hasil Pipeline}
+
+Push ke branch fitur dan \texttt{dev} menjalankan dua job pengujian tanpa deploy.
+Push ke \texttt{main} menjalankan ketiga job; job deploy membangun dan mendorong
+image ke GHCR. Tabel~\ref{tab:runs} merangkum run yang diamati.
+
+\begin{table}[H]
+\centering
+\caption{Run GitHub Actions yang diamati}
+\label{tab:runs}
+\small
+\begin{tabularx}{\textwidth}{@{}l X l l@{}}
+\toprule
+\textbf{Event} & \textbf{Commit/Run} & \textbf{Job} & \textbf{Deploy} \\
+\midrule
+Push fitur & CI pada branch \texttt{feature/docker-frankenphp} & test + build & Tidak \\
+PR \#1 & Pemeriksaan sebelum merge ke \texttt{dev} & test + build & Tidak \\
+Push \texttt{dev} & Setelah PR \#1 digabung & test + build & Tidak \\
+PR \#2 & Pemeriksaan sebelum merge ke \texttt{main} & test + build & Tidak \\
+Push \texttt{main} & Setelah PR \#2 digabung & test + build + deploy & Ya \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\gambarpenting[0.9\textwidth]{img/actions-dev-crop.png}{Run pada \texttt{dev}: dua job lulus, deploy tidak muncul}
+\label{fig:actionsdev}
+
+\gambarpenting[0.9\textwidth]{img/actions-main-crop.png}{Run pada \texttt{main}: backend-test, frontend-build, dan deploy lulus}
+\label{fig:actionsmain}
+
+\subsection{Image di GHCR}
+
+Dua package container dipublikasikan: backend dan frontend. Halaman package
+menampilkan tag commit SHA dan tautan ke repositori. Setelah repo berganti nama
+menjadi \texttt{uts-pl}, nama package mengikuti nama repositori baru.
+
+\gambarpenting[0.78\textwidth]{img/packages.png}{Daftar package container di GHCR}
+\label{fig:packages}
+
+\gambarpenting[0.8\textwidth]{img/package-backend-crop.png}{Halaman package backend dan tag SHA}
+\label{fig:packagebackend}
+
+\section{CPMK 5: Dokumentasi dan Reproduksibilitas}
+
+Dokumentasi terdiri dari README, Postman Collection, komentar pada konfigurasi
+non-obvious, dan laporan ini. README memuat cara menjalankan, tabel endpoint,
+perintah pengujian, penjelasan alamat API, serta daftar secrets. Postman Collection
+memungkinkan penguji mencoba endpoint tanpa menulis ulang body JSON.
+
+Yang belum sepenuhnya otomatis adalah pengambilan tangkapan layar Postman dan
+pengujian UI. Keduanya masih manual karena memerlukan aplikasi desktop dan
+pemeriksaan visual. Untuk pengembangan lanjutan, UI test dapat memakai Playwright,
+sedangkan API test dapat dijalankan dengan Newman di pipeline.
+
+\section{Pembahasan Alur Data End-to-End}
+
+Saat pengguna mengisi formulir dan menekan ``Simpan catatan'', Vue membentuk objek
+payload. \texttt{ServiceForm} memanggil \texttt{api.post('/service-logs', payload)}.
+Axios menambahkan \texttt{baseURL} dari \texttt{VITE\_API\_URL} dan header
+\texttt{Authorization} dari token di \texttt{localStorage}. Di Docker, permintaan
+menuju \texttt{http://localhost:8080/api/service-logs}. Nginx mencocokkan
+\texttt{location /api/} dan meneruskannya ke \texttt{http://backend:8000/api/service-logs}.
+
+Di backend, route Laravel mencocokkan \texttt{POST /api/service-logs}. Middleware
+\texttt{auth:sanctum} memeriksa token. Jika valid, \texttt{ServiceLogRequest}
+menjalankan validasi. Jika lolos, controller memanggil relasi
+\texttt{\$request->user()->serviceLogs()->create(\$request->validated())}. Eloquent
+mengisi \texttt{user\_id} dari pengguna yang terautentikasi dan menjalankan
+\texttt{INSERT} ke MySQL. Controller mengembalikan JSON dengan status 201.
+
+Frontend menerima respons, mengosongkan formulir, memuat ulang daftar dengan
+\texttt{GET /api/service-logs}, dan menampilkan pesan ``Catatan disimpan.''. Jika
+validasi gagal, respons 422 berisi \texttt{errors}; formulir menampilkan pesan di
+bawah field yang salah. Jika token hilang, respons 401 memicu event
+\texttt{auth:expired} dan router mengarahkan pengguna ke \texttt{/masuk}.
+
+\section{Kendala dan Solusi}
+\label{sec:kendala}
+
+\begin{table}[H]
+\centering
+\caption{Kendala yang ditemui dan solusinya}
+\label{tab:kendala}
+\small
+\begin{tabularx}{\textwidth}{@{}p{0.8cm} X X@{}}
+\toprule
+\textbf{No} & \textbf{Kendala} & \textbf{Solusi} \\
+\midrule
+1 & Frontend sempat memanggil \texttt{localhost:8000} dari browser, sehingga alamat API berbeda antara lokal dan Docker. & Alamat dipindah ke \texttt{VITE\_API\_URL}; Docker memakai \texttt{/api} dan Nginx mem-proxy ke \texttt{backend:8000}. \\
+2 & Nginx dengan \texttt{proxy\_pass http://backend:8000} dapat menyimpan DNS lama saat container backend dibuat ulang. & Memakai \texttt{resolver 127.0.0.11} dan variabel \texttt{\$backend} agar resolusi dilakukan ulang. \\
+3 & Backend sempat 500 untuk permintaan tanpa \texttt{Accept: application/json} karena middleware mencari route \texttt{login}. & Menambahkan \texttt{redirectGuestsTo(fn () => null)} dan tes regresi 401. \\
+4 & Pesan validasi \texttt{min} untuk biaya masih berbahasa Inggris. & Menambahkan pesan per atribut \texttt{cost.min} dan \texttt{odometer\_km.min}; pesan size Laravel tidak dibaca dari larik biasa. \\
+5 & Container backend mulai sebelum MySQL siap. & Entrypoint menunggu dengan 30 percobaan, lalu migrasi dan seeder. \\
+6 & Registrasi publik tidak boleh ada, tetapi penguji membutuhkan akun. & \texttt{DemoSeeder} membuat akun demo saat backend mulai. \\
+7 & Data hilang jika volume ikut dihapus. & Volume bernama \texttt{uts-pl\_db\_data}; dokumentasi menjelaskan perbedaan \texttt{down} dan \texttt{down -v}. \\
+8 & Deploy bisa terjadi dari branch selain \texttt{main}. & Job deploy diberi kondisi \texttt{github.ref}\allowbreak\texttt{==}\allowbreak\texttt{'refs/heads/main'}; branch protection mencegah push langsung. \\
+9 & Rahasia berisiko masuk repositori. & \texttt{.env} di-\texttt{.gitignore}; nilai produksi di GitHub Secrets; Dockerfile tidak memuat secret. \\
+10 & Nama repositori awal memakai akhiran \texttt{uts-pi}, tidak sesuai kode mata kuliah. & Repositori, nama image, volume, README, dan laporan diseragamkan menjadi \texttt{uts-pl}. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+Kendala nomor 3 adalah yang paling penting untuk dicatat. Tanpa pengujian dari
+proxy, bug ini tidak terlihat karena \texttt{getJson()} selalu mengirim header
+JSON. Perbaikannya kecil, tetapi dampaknya besar: API sekarang konsisten
+mengembalikan 401 JSON untuk semua permintaan tanpa token.
+
+\section{Kesesuaian dengan Ketentuan}
+
+\begin{table}[H]
+\centering
+\caption{Pemetaan ketentuan tugas ke bukti}
+\label{tab:checklist}
+\small
+\begin{tabularx}{\textwidth}{@{}p{4.3cm} X p{2.1cm}@{}}
+\toprule
+\textbf{Ketentuan} & \textbf{Bukti} & \textbf{Lokasi} \\
+\midrule
+REST API Laravel + Sanctum & \texttt{routes/api.php}, \texttt{AuthController}, tes 401 & Subbab 4.3, 5.2 \\
+Semua endpoint selain login memakai token & Grup \texttt{auth:sanctum}; tes tamu 401 & Kode~\ref{kode:routes}, Tabel~\ref{tab:hasilapi} \\
+CRUD status 201/422/401 & Tes dan transkrip curl & Tabel~\ref{tab:hasilapi} \\
+Minimal 2 feature test & 16 tes, 38 asersi & Lampiran~\ref{lam:test} \\
+Postman Collection & \texttt{postman/buku-servis.postman\_collection.json} & Subbab 5.2 \\
+Vue + Axios + token & \texttt{api.js}, \texttt{auth.js}, halaman UI & Subbab 4.4, 5.3 \\
+API URL dari env & \texttt{VITE\_API\_URL} & Kode~\ref{kode:axios} \\
+Docker Compose 3 service & db, backend, frontend & Tabel~\ref{tab:compose} \\
+Jaringan service-name & \texttt{DB\_HOST=db}, proxy \texttt{backend:8000} & Kode~\ref{kode:nginx} \\
+Volume permanen & \texttt{uts-pl\_db\_data}; uji id 8 & Subbab 5.5 \\
+Kredensial dari \texttt{.env} & \texttt{.env.example}, secrets & Subbab 4.7, 5.4 \\
+FrankenPHP (bonus) & Dockerfile, Caddyfile, log startup & Subbab 4.5, 5.5 \\
+CI/CD & \texttt{ci.yml}; job test, build, deploy & Tabel~\ref{tab:runs} \\
+Deploy hanya dari \texttt{main} & Kondisi job deploy & Kode~\ref{kode:deploy} \\
+Image GHCR tag SHA & Halaman package & Gambar~\ref{fig:packagebackend} \\
+Branch + PR + protection & Branch, PR \#1, \#2, screenshot & Gambar~\ref{fig:protmain} \\
+Secrets tidak di repo & GitHub Secrets, \texttt{.gitignore} & Gambar~\ref{fig:secrets} \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\chapter{KESIMPULAN DAN SARAN}
+\label{chap:kesimpulan}
+
+\section{Kesimpulan}
+
+Buku Servis berhasil dibangun sebagai aplikasi web terintegrasi. API Laravel 12
+dengan Sanctum melindungi seluruh endpoint selain login; 16 tes fitur lulus dengan
+38 asersi. Frontend Vue 3 memakai Axios dan mengambil alamat API dari
+\texttt{VITE\_API\_URL}, sehingga kode yang sama dapat berjalan di lokal dan di
+Docker. Docker Compose menjalankan MySQL, backend FrankenPHP, dan frontend Nginx
+pada satu network. Data bertahan setelah container dihentikan karena memakai volume
+bernama.
+
+FrankenPHP terbukti dipakai: log startup mencatat PHP 8.4.27 dan access log mencatat
+permintaan API, sedangkan header respons memuat \texttt{Server: FrankenPHP Caddy}.
+Pipeline GitHub Actions menjalankan tes dan build pada branch fitur, \texttt{dev},
+serta pull request; deploy hanya berjalan pada push ke \texttt{main} dan menghasilkan
+image GHCR bertag commit SHA. Branch protection pada \texttt{main} dan \texttt{dev}
+mewajibkan pull request serta status check, dan rahasia disimpan di GitHub Secrets.
+
+Pekerjaan ini juga menunjukkan bahwa integrasi tidak selesai setelah kode CRUD
+berjalan. Dua masalah nyata, yaitu DNS Nginx dan redirect tamu ke route login,
+baru muncul saat sistem dijalankan sebagai container dan diuji dari proxy. Keduanya
+diselesaikan dengan konfigurasi kecil dan tes regresi.
+
+\section{Saran}
+
+Untuk pengembangan berikutnya:
+
+\begin{enumerate}[leftmargin=1.2cm]
+  \item Tambahkan pengujian UI otomatis dengan Playwright agar alur login, tambah,
+        ubah, dan hapus tidak hanya diuji manual.
+  \item Jalankan Postman Collection dengan Newman di pipeline agar kontrak API
+        diperiksa pada setiap pull request.
+  \item Tambahkan fitur pengingat servis berdasarkan interval kilometer atau
+        tanggal, serta ekspor catatan ke PDF/CSV.
+  \item Pisahkan database production dari database demo dan gunakan migrasi
+        terpisah untuk data contoh.
+  \item Gunakan secret manager atau environment terenkripsi untuk deployment di
+        server nyata, bukan hanya GitHub Secrets.
+  \item Tambahkan rate limiting pada login dan audit log untuk permintaan yang
+        mengubah data.
+\end{enumerate}
+
+% ---------- Daftar Pustaka ----------
+\backmatter
+\chapter*{DAFTAR PUSTAKA}
+\addcontentsline{toc}{chapter}{DAFTAR PUSTAKA}
+\phantomsection
+
+\begin{thebibliography}{9}
+\bibitem{laravel}
+Laravel. \emph{Laravel 12.x Documentation}. \url{https://laravel.com/docs/12.x}, diakses 24 Oktober 2026.
+
+\bibitem{sanctum}
+Laravel. \emph{Laravel Sanctum}. \url{https://laravel.com/docs/12.x/sanctum}, diakses 24 Oktober 2026.
+
+\bibitem{vue}
+Vue.js. \emph{Vue 3 Documentation}. \url{https://vuejs.org/guide/}, diakses 24 Oktober 2026.
+
+\bibitem{axios}
+Axios. \emph{Axios Documentation}. \url{https://axios-http.com/docs/intro}, diakses 24 Oktober 2026.
+
+\bibitem{docker}
+Docker. \emph{Docker Compose Documentation}. \url{https://docs.docker.com/compose/}, diakses 24 Oktober 2026.
+
+\bibitem{frankenphp}
+FrankenPHP. \emph{FrankenPHP Documentation}. \url{https://frankenphp.dev/docs/}, diakses 24 Oktober 2026.
+
+\bibitem{gha}
+GitHub. \emph{GitHub Actions Documentation}. \url{https://docs.github.com/en/actions}, diakses 24 Oktober 2026.
+
+\bibitem{ghcr}
+GitHub. \emph{Working with the Container Registry}. \url{https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry}, diakses 24 Oktober 2026.
+
+\bibitem{protection}
+GitHub. \emph{About protected branches}. \url{https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches}, diakses 24 Oktober 2026.
+
+\bibitem{postman}
+Postman. \emph{Postman Collection Format}. \url{https://schema.getpostman.com/json/collection/v2.1.0/docs/index.html}, diakses 24 Oktober 2026.
+\end{thebibliography}
+
+% ---------- Lampiran ----------
+\appendix
+\clearpage
+\phantomsection
+\chapter*{LAMPIRAN}
+\addcontentsline{toc}{chapter}{LAMPIRAN}
+\markboth{LAMPIRAN}{}
+% \backmatter membuat \chapter tidak menomori bab. Penomoran bagian
+% lampiran diatur manual agar menjadi A.1, A.2, dan seterusnya.
+\setcounter{chapter}{1}
+\renewcommand{\thechapter}{A}
+\setcounter{section}{0}
+
+\section{Keluaran Tes}
+\label{lam:test}
+\lstinputlisting[language=bash,caption={Keluaran lengkap \texttt{php artisan test}}]{test-output.txt}
+
+\section{Keluaran \texttt{docker compose ps}}
+\label{lam:ps}
+\lstinputlisting[language=bash,caption={Keluaran \texttt{docker compose ps} setelah semua container sehat}]{docker-compose-ps.txt}
+
+\section{Bukti Log FrankenPHP}
+\label{lam:franken}
+\lstinputlisting[language=bash,caption={Startup dan access log FrankenPHP (tanpa warna)}]{frankenphp-evidence.txt}
+
+\section{Bukti Persistensi}
+\label{lam:persistensi}
+\lstinputlisting[language=bash,caption={Transkrip uji persistensi volume}]{persistence.txt}
+
+\section{Transkrip Verifikasi API}
+\label{lam:api}
+\lstinputlisting[language=bash,caption={Transkrip curl; token disamarkan},breaklines=true]{api-verification.txt}
+
+\section{Tautan Penting}
+
+\begin{itemize}[leftmargin=1.2cm]
+  \item Repositori: \url{https://github.com/Ryzen0000001/uts-pl-24-535196-SV-24171}
+  \item Pull request \#1: \url{https://github.com/Ryzen0000001/uts-pl-24-535196-SV-24171/pull/1}
+  \item Pull request \#2: \url{https://github.com/Ryzen0000001/uts-pl-24-535196-SV-24171/pull/2}
+  \item Package backend: \url{https://github.com/users/Ryzen0000001/packages/container/package/uts-pl-24-535196-sv-24171-backend}
+  \item Package frontend: \url{https://github.com/users/Ryzen0000001/packages/container/package/uts-pl-24-535196-sv-24171-frontend}
+  \item Postman Collection: \url{https://github.com/Ryzen0000001/uts-pl-24-535196-SV-24171/blob/main/postman/buku-servis.postman_collection.json}
+\end{itemize}
+
+\end{document}

@@ -21,6 +21,15 @@ final class ValidationMessages
             'max.string' => ':attribute maksimal :max karakter.',
             'min.numeric' => ':attribute tidak boleh kurang dari :min.',
             'max.numeric' => ':attribute tidak boleh lebih dari :max.',
+            'min.integer' => ':attribute tidak boleh kurang dari :min.',
+            'max.integer' => ':attribute tidak boleh lebih dari :max.',
+            // Pesan untuk aturan ukuran (min/max) perlu kunci per atribut
+            // karena Laravel mengambil pesan size dari translator, bukan
+            // dari larik messages biasa.
+            'odometer_km.min' => 'Kilometer tidak boleh kurang dari :min.',
+            'odometer_km.max' => 'Kilometer tidak boleh lebih dari :max.',
+            'cost.min' => 'Biaya tidak boleh kurang dari :min.',
+            'cost.max' => 'Biaya tidak boleh lebih dari :max.',
         ];
     }
 

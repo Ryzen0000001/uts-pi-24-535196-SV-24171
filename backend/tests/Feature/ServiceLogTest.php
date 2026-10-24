@@ -36,6 +36,13 @@ class ServiceLogTest extends TestCase
         $this->deleteJson("/api/service-logs/{$log->id}")->assertUnauthorized();
     }
 
+    public function test_guest_without_json_accept_header_still_gets_401(): void
+    {
+        // Nginx meneruskan permintaan tanpa Accept: application/json. Tanpa
+        // pengaturan redirectGuestsTo, Laravel mencari route login dan gagal 500.
+        $this->get('/api/service-logs')->assertUnauthorized();
+    }
+
     public function test_index_lists_only_own_logs(): void
     {
         $user = User::factory()->create();
@@ -66,9 +73,14 @@ class ServiceLogTest extends TestCase
     {
         Sanctum::actingAs(User::factory()->create());
 
-        $this->postJson('/api/service-logs', $this->payload(['motor' => '', 'odometer_km' => 'banyak']))
+        $this->postJson('/api/service-logs', $this->payload([
+            'motor' => '',
+            'odometer_km' => 'banyak',
+            'cost' => -1,
+        ]))
             ->assertUnprocessable()
-            ->assertJsonValidationErrors(['motor', 'odometer_km']);
+            ->assertJsonValidationErrors(['motor', 'odometer_km', 'cost'])
+            ->assertJsonPath('errors.cost.0', 'Biaya tidak boleh kurang dari 0.');
     }
 
     public function test_show_returns_own_log_but_404_for_other_users_log(): void
